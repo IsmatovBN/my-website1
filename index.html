@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Asfalt qilish xizmati</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* Global Styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+      padding-top: 90px; /* Reserve space for fixed header */
+    }
+    .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+    
+    /* Fixed Header (Desktop remains unchanged) */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      height: 90px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+    }
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    .main-title h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5em;
+      color: #f2b705;
+      letter-spacing: 2px;
+      margin-right: 40px;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 20px;
+    }
+    .nav-menu a {
+      text-decoration: none;
+      background: #f2b705;
+      color: #000;
+      padding: 8px 12px;
+      border: 1px solid #f2b705;
+      border-radius: 6px;
+      transition: background 0.3s, transform 0.2s;
+      font-size: 0.9em;
+      font-weight: bold;
+      white-space: nowrap;
+      min-width: 110px;
+      text-align: center;
+    }
+    .nav-menu a:hover { background: #e5a700; transform: translateY(-2px); }
+    .nav-menu a:active { background: #55a630; transform: scale(1.05); color: #fff; }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5em;
+      color: #333;
+      transition: transform 0.2s;
+    }
+    .lang-btn:active { transform: scale(1.05); }
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      top: 35px;
+      right: 20px;
+      background: #444;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    .lang-dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      color: #fff;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .lang-dropdown a:hover { background: #555; }
+    .location {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 1em;
+      color: #333;
+    }
+    
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      background: url('images/asphalt1.jpg') no-repeat center center/cover;
+    }
+    .hero .slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+    .hero .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      opacity: 0;
+      animation: slideAnimation 36s infinite;
+    }
+    .hero .slide:nth-child(1) { animation-delay: 0s; }
+    .hero .slide:nth-child(2) { animation-delay: 6s; }
+    .hero .slide:nth-child(3) { animation-delay: 12s; }
+    .hero .slide:nth-child(4) { animation-delay: 18s; }
+    .hero .slide:nth-child(5) { animation-delay: 24s; }
+    .hero .slide:nth-child(6) { animation-delay: 30s; }
+    @keyframes slideAnimation {
+      0% { opacity: 0; }
+      5% { opacity: 1; }
+      30% { opacity: 1; }
+      35% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    .hero .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.35);
+      z-index: 1;
+    }
+    .hero .content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      color: #fff;
+    }
+    .hero .sub-heading {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .hero .content h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+      line-height: 1.2;
+      font-weight: bold;
+    }
+    .phone-number {
+      background: #f2b705;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.2s;
+      font-size: 1.4em;
+    }
+    .phone-number:hover { transform: translateY(-3px); }
+    .phone-number:active { transform: scale(1.05); }
+    
+    /* Services Section */
+    .services {
+      padding: 80px 0;
+      background: #fff;
+      text-align: center;
+    }
+    .services h2 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .services .subheading {
+      font-size: 1.1em;
+      color: #666;
+      margin-bottom: 40px;
+      font-style: italic;
+    }
+    /* Use CSS Grid for service cards: 3 columns on desktop */
+    .services .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .services .card {
+      background: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      transition: transform 0.3s;
+      text-align: center;
+    }
+    .services .card:hover { transform: translateY(-5px); }
+    .services .card i {
+      font-size: 2.5em;
+      color: #f2b705;
+      margin-bottom: 15px;
+    }
+    .services .card .title {
+      font-size: 1.7em;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+      min-height: 2.5em;
+    }
+    .services .card a.card-link {
+      text-decoration: none !important;
+      color: inherit;
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+    }
+    .services .card .desc {
+      font-size: 1em;
+      color: #666;
+      margin-bottom: 10px;
+    }
+    
+    /* About Section */
+    .about {
+      padding: 80px 0;
+      background: #fff;
+      text-align: center;
+    }
+    .about h2 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .about p {
+      font-size: 1em;
+      color: #666;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .about .additional-desc {
+      margin-top: 20px;
+      font-size: 1em;
+      color: #666;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 20px auto 0;
+    }
+    
+    /* Video Section */
+    .video-section {
+      position: relative;
+      height: 60vh;
+      margin: 40px 0;
+      background: #000;
+      overflow: hidden;
+    }
+    .video-frame {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      height: 100%;
+      border: 5px solid #f2b705;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    .video-frame iframe {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    /* Modal for Contact */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 3000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+    }
+    .modal-content h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      margin-bottom: 10px;
+      font-size: 2em;
+    }
+    .modal-content p {
+      font-size: 1em;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      cursor: pointer;
+      color: #333;
+    }
+    
+    /* Footer */
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+    }
+    footer p { font-size: 0.9em; margin: 0; }
+    
+    /* --- Responsive Adjustments --- */
+    /* For Tablets (up to 1024px) */
+    @media (max-width: 1024px) {
+      .main-title h1 { font-size: 3em; }
+      .nav-menu a { font-size: 0.85em; padding: 7px 10px; min-width: 100px; }
+      .location { font-size: 0.95em; }
+      .hero .sub-heading { font-size: 2.3em; }
+      .hero .content h1 { font-size: 2.8em; }
+      .phone-number { font-size: 1.3em; padding: 11px 22px; }
+      .services .cards { grid-template-columns: repeat(3, 1fr); }
+    }
+    
+    /* For Mobile Devices (up to 768px) */
+    @media (max-width: 768px) {
+      header { padding: 5px 10px; }
+      .header-inner { flex-direction: column; align-items: center; gap: 5px; }
+      .header-left { flex-direction: column; align-items: center; gap: 5px; }
+      .main-title h1 { font-size: 2.5em; }
+      .nav-menu { flex-wrap: wrap; justify-content: center; gap: 5px; }
+      .nav-menu a { font-size: 0.75em; padding: 4px 8px; min-width: 80px; }
+      .header-right { flex-direction: column; align-items: center; gap: 5px; }
+      .location { font-size: 0.8em; }
+      
+      .hero .sub-heading { font-size: 2em; }
+      .hero .content h1 { font-size: 2.2em; }
+      .hero .content { padding: 0 10px; }
+      .phone-number { font-size: 1.2em; padding: 10px 20px; }
+      
+      /* Change grid layout for service cards to 2 columns */
+      .services .cards { grid-template-columns: repeat(2, 1fr); }
+      .video-section { height: 40vh; }
+    }
+    
+    /* For Small Mobile Devices (up to 480px) */
+    @media (max-width: 480px) {
+      .main-title h1 { font-size: 2em; }
+      .nav-menu a { font-size: 0.7em; padding: 3px 6px; min-width: 70px; }
+      .location { font-size: 0.75em; }
+      .hero .sub-heading { font-size: 1.8em; }
+      .hero .content h1 { font-size: 2em; }
+      .phone-number { font-size: 1.1em; padding: 8px 16px; }
+      /* Grid becomes one column on very small screens */
+      .services .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+  
+  <script>
+    // Language translations
+    const translations = {
+      heroHeadline: "Качественный асфальт, прочные дороги!",
+      heroSubHeading: "По всему Узбекистану", // For Russian
+      phoneNumber: "94 720 34 07",
+      servicesHeading: "Укладка асфальта на прочное основание",
+      servicesSubheading: "Наши услуги – самые надежные решения для ваших дорог.",
+      aboutHeading: "О нас",
+      aboutText: "Стремясь стать лидерами в области асфальтирования, мы используем материалы высочайшего качества и современные технологии. Мы предоставляем профессиональный подход к созданию прочных, безопасных и эстетически привлекательных асфальтовых покрытий. Каждый проект – это отражение нашей уверенности и опыта.",
+      navBoshSahifa: "Главная",
+      navXizmatlar: "Услуги",
+      navBizHaqimizda: "О нас",
+      navBoglanish: "Контакты",
+      location: "Tashkent, Uzbekistan"
+    };
+
+    const serviceTranslations = {
+      "Avtoturargohlarni asfaltlash": "Асфальтирование автостоянок",
+      "Hovlilarni asfaltlash": "Асфальтирование дворов",
+      "Ko‘chalarni asfaltlash": "Асфальтирование улиц",
+      "Maydonlarni asfaltlash": "Асфальтирование площадей",
+      "Piyodalar yo‘lakchalarini asfaltlash": "Асфальтирование пешеходных дорожек",
+      "Yo‘llarni asfaltlash": "Асфальтирование дорог",
+      "Bordyurlarni o‘rnatish": "Установка бордюров",
+      "Lotok va kolodeslarni o‘rnatish": "Установка лотков и колодцев",
+      "Shebendan yo‘l asoslarini qurish": "Строительство основания дороги из щебня",
+      "Yo’ldagi yamoqlarni ta’mirlash": "Ремонт дорожных ям",
+      "Yo‘l chiziqlari": "Дорожная разметка",
+      "Yo‘llarni ta’mirlash": "Ремонт дорог"
+    };
+
+    function switchToRussian() {
+      const navLinks = document.querySelectorAll('.nav-menu a');
+      navLinks[0].textContent = translations.navBoshSahifa;
+      navLinks[1].textContent = translations.navXizmatlar;
+      navLinks[2].textContent = translations.navBizHaqimizda;
+      navLinks[3].textContent = translations.navBoglanish;
+      
+      document.querySelector('.hero .sub-heading').textContent = translations.heroSubHeading;
+      document.querySelector('.hero .content h1').textContent = translations.heroHeadline;
+      document.querySelector('.phone-number').innerHTML = `<i class="fas fa-phone-alt"></i> ${translations.phoneNumber}`;
+      
+      document.querySelector('.services h2').textContent = translations.servicesHeading;
+      document.querySelector('.services .subheading').textContent = translations.servicesSubheading;
+      document.querySelector('.about h2').textContent = translations.aboutHeading;
+      document.querySelector('.about p').textContent = translations.aboutText;
+      document.querySelector('.location').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${translations.location}`;
+      
+      const serviceCards = document.querySelectorAll('.services .card .title');
+      serviceCards.forEach(card => {
+        const normalizedText = card.innerText.replace(/\n/g, " ").replace(/\s+/g, " ").trim();
+        if (serviceTranslations[normalizedText]) {
+          card.textContent = serviceTranslations[normalizedText];
+        }
+      });
+    }
+
+    function switchToUzbek() {
+      const navLinks = document.querySelectorAll('.nav-menu a');
+      navLinks[0].textContent = "Bosh sahifa";
+      navLinks[1].textContent = "Xizmatlar";
+      navLinks[2].textContent = "Biz haqimizda";
+      navLinks[3].textContent = "Bog'lanish";
+      
+      document.querySelector('.hero .sub-heading').textContent = "Butun O'zbekiston bo'ylab";
+      document.querySelector('.hero .content h1').textContent = "Sifatli asfalt, mustahkam yo'llar!";
+      document.querySelector('.phone-number').innerHTML = `<i class="fas fa-phone-alt"></i> 94 720 34 07`;
+      
+      document.querySelector('.services h2').textContent = "Qattiq poydevorga ega yuqori sifatli asfalt yotqizish";
+      document.querySelector('.services .subheading').textContent = "Bizning xizmatlarimiz – sizning yo'llaringiz uchun eng ishonchli yechimlar.";
+      document.querySelector('.about h2').textContent = "Biz haqimizda";
+      document.querySelector('.about p').textContent = translations.aboutText;
+      document.querySelector('.location').innerHTML = `<i class="fas fa-map-marker-alt"></i> Tashkent, Uzbekistan`;
+      
+      const serviceCards = document.querySelectorAll('.services .card .title');
+      const originalServices = [
+        "Avtoturargohlarni asfaltlash",
+        "Hovlilarni asfaltlash",
+        "Ko‘chalarni asfaltlash",
+        "Maydonlarni asfaltlash",
+        "Piyodalar yo‘lakchalarini asfaltlash",
+        "Yo‘llarni asfaltlash",
+        "Bordyurlarni o‘rnatish",
+        "Lotok va kolodeslarni o‘rnatish",
+        "Shebendan yo‘l asoslarini qurish",
+        "Yo’ldagi yamoqlarni ta’mirlash",
+        "Yo‘l chiziqlari",
+        "Yo‘llarni ta’mirlash"
+      ];
+      serviceCards.forEach((card, index) => {
+        card.textContent = originalServices[index];
+      });
+    }
+
+    function setupLanguageSwitcher() {
+      document.querySelector('#lang-dropdown a[href="#lang-rus"]').addEventListener('click', function(e) {
+        e.preventDefault();
+        switchToRussian();
+      });
+      document.querySelector('#lang-dropdown a[href="#lang-uz"]').addEventListener('click', function(e) {
+        e.preventDefault();
+        switchToUzbek();
+      });
+    }
+
+    window.addEventListener("load", setupLanguageSwitcher);
+
+    function toggleLangDropdown() {
+      const dropdown = document.getElementById("lang-dropdown");
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    }
+  </script>
+</head>
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Asfalt ishlari | Toshkent asfalt xizmati</title>
+    <meta name="description" content="Toshkentda asfaltlash xizmati: yo‘llarni asfaltlash, avtoturargohlarni asfaltlash, hovlilarni asfaltlash va boshqalar. Sifatli va tezkor asfalt ishlari!">
+    <meta name="keywords" content="Asfalt ishlari, Asfalt xizmati, Asfalt Toshkent, Toshkent asfalt, Toshkentda asfaltlash xizmati, Avtoturargohlarni asfaltlash, Hovlilarni asfaltlash, Ko‘chalarni asfaltlash, Maydonlarni asfaltlash, Piyodalar yo‘lakchalarini asfaltlash, Yo‘llarni asfaltlash, Bordyurlarni o‘rnatish, Lotok va kolodeslarni o‘rnatish, PGS dan yo‘l asoslarini qurish, Shebendan yo‘l asoslarini qurish, Yo’ldagi yamoqlarni ta’mirlash, Yo‘l chiziqlari, Yo‘llarni ta’mirlash, Aspalt ishlari, Aspalt, OLX asfalt xizmati, OLX asfalt ishlari, Асфальтовые работы, Асфальт Ташкент, Ташкентский асфальт, Асфальтирование в Ташкенте, Асфальтирование парковок, Мощение дворов, Мощение улиц, Мощение площадок, Мощение пешеходных дорожек, Асфальтирование дорог, Установка бордюров, Установка лотков и желобов, Строительство дорожных оснований из ПГС, Строительство дорожных оснований от Шебена, Ремонт дорожных заплаток, Дорожные линии, Ремонт дорог">
+    <meta name="author" content="Sizning ismingiz yoki kompaniya nomi">
+</head>
+<body>
+    <h1>Asfalt ishlari va Toshkentda asfaltlash xizmati</h1>
+    <p>Biz sizga sifatli va ishonchli asfaltlash xizmatlarini taklif qilamiz: <strong>yo‘llarni asfaltlash, hovlilarni asfaltlash, avtoturargohlarni asfaltlash</strong> va boshqa xizmatlar. <br> 
+       Toshkent va butun O‘zbekiston bo‘ylab xizmat ko‘rsatamiz.</p>
+    <h2>Bizning xizmatlar</h2>
+    <ul>
+        <li>Avtoturargohlarni asfaltlash</li>
+        <li>Hovlilarni asfaltlash</li>
+        <li>Ko‘chalarni asfaltlash</li>
+        <li>Maydonlarni asfaltlash</li>
+        <li>Piyodalar yo‘lakchalarini asfaltlash</li>
+        <li>Yo‘llarni asfaltlash va ta’mirlash</li>
+        <li>Bordyurlarni va lotoklarni o‘rnatish</li>
+        <li>Yo‘l chiziqlarini chizish</li>
+    </ul>
+    <h2>Biz bilan bog‘laning</h2>
+    <p>Bizning asfalt ishlari xizmatlarimiz bo‘yicha batafsil ma’lumot olish uchun <strong>hoziroq bog‘laning!</strong></p>
+</body>
+</html>
+
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container header-inner">
+      <div class="header-left">
+        <div class="main-title">
+          <h1>Asfalt xizmatlari</h1>
+        </div>
+        <nav class="nav-menu">
+          <a href="#hero">Bosh sahifa</a>
+          <a href="#services">Xizmatlar</a>
+          <a href="#about">Biz haqimizda</a>
+          <a href="#contact" onclick="document.getElementById('contactModal').style.display='flex'">Bog'lanish</a>
+        </nav>
+      </div>
+      <div class="header-right">
+        <button class="lang-btn" onclick="toggleLangDropdown()">
+          <i class="fas fa-globe"></i>
+        </button>
+        <div id="lang-dropdown" class="lang-dropdown">
+          <a href="#lang-rus">
+            <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/ru.svg" alt="Рус" width="24"> Рус
+          </a>
+          <a href="#lang-uz">
+            <img src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/uz.svg" alt="Uzb" width="24"> Uzb
+          </a>
+        </div>
+        <div class="location">
+          <i class="fas fa-map-marker-alt"></i> Tashkent, Uzbekistan
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="slider">
+      <img src="images/asphalt1.jpg" alt="Asphalt Image 1" class="slide">
+      <img src="images/asphalt2.jpg" alt="Asphalt Image 2" class="slide">
+      <img src="images/asphalt3.jpg" alt="Asphalt Image 3" class="slide">
+      <img src="images/asphalt4.jpg" alt="Asphalt Image 4" class="slide">
+      <img src="images/asphalt5.jpg" alt="Asphalt Image 5" class="slide">
+      <img src="images/asphalt6.jpg" alt="Asphalt Image 6" class="slide">
+    </div>
+    <div class="overlay"></div>
+    <div class="content">
+      <p class="sub-heading">Butun O'zbekiston bo'ylab</p>
+      <h1>Sifatli asfalt, mustahkam yo'llar!</h1>
+      <a href="tel:947203407" class="phone-number">
+        <i class="fas fa-phone-alt"></i> 94 720 34 07
+      </a>
+    </div>
+  </section>
+  
+  <!-- Video Section -->
+  <section class="video-section">
+    <div class="video-frame">
+      <iframe src="https://www.youtube.com/embed/LYnNgmLSnIw?autoplay=1&amp;mute=1&amp;controls=0&amp;loop=1&amp;playlist=LYnNgmLSnIw" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+  </section>
+  
+  <!-- Services Section -->
+  <section class="services" id="services">
+    <div class="container">
+      <h2>Qattiq poydevorga ega yuqori sifatli asfalt yotqizish</h2>
+      <p class="subheading">Bizning xizmatlarimiz – sizning yo'llaringiz uchun eng ishonchli yechimlar.</p>
+      <div class="cards">
+        <div class="card">
+          <a href="#hero" class="card-link">
+            <i class="fas fa-car"></i>
+            <div class="title">Avtoturargohlarni<br>asfaltlash</div>
+          </a>
+        </div>
+        <div class="card">
+          <a href="#hero" class="card-link">
+            <i class="fas fa-building"></i>
+            <div class="title">Hovlilarni asfaltlash</div>
+          </a>
+        </div>
+        <div class="card">
+          <a href="#hero" class="card-link">
+            <i class="fas fa-road"></i>
+            <div class="title">Ko‘chalarni asfaltlash</div>
+          </a>
+        </div>
+        <div class="card">
+          <a href="#hero" class="card-link">
+            <i class="fas fa-square"></i>
+            <div class="title">Maydonlarni asfaltlash</div>
+          </a>
+        </div>
+        <div class="card">
+          <a href="#hero" class="card-link">
+            <i class="fas fa-walking"></i>
+            <div class="title">Piyodalar yo‘lakchalarini asfaltlash</div>
+          </a>
+        </div>
+        <div class="card">
+          <a href="#hero" class="card-link">
+            <i class="fas fa-road"></i>
+            <div class="title">Yo‘llarni asfaltlash</div>
+          </a>
+        </div>
+        <div class="card">
+          <a href="#hero" class="card-link">
+            <i class="fas fa-border-all"></i>
+            <div class="title">Bordyurlarni o‘rnatish</div>
+          </a>
+        </div>
+        <div class="card">
+          <a href="#hero" class="card-link">
+            <i class="fas fa-cogs"></i>
+            <div class="title">Lotok va kolodeslarni o‘rnatish</div>
+          </a>
+        </div>
+        <div class="card">
+          <a href="#hero" class="card-link">
+            <i class="fas fa-hard-hat"></i>
+            <div class="title">Shebendan yo‘l asoslarini qurish</div>
+          </a>
+        </div>
+        <div class="card">
+          <a href="#hero" class="card-link">
+            <i class="fas fa-wrench"></i>
+            <div class="title">Yo’ldagi yamoqlarni ta’mirlash</div>
+          </a>
+        </div>
+        <div class="card">
+          <a href="#hero" class="card-link">
+            <i class="fas fa-pencil-ruler"></i>
+            <div class="title">Yo‘l chiziqlari</div>
+          </a>
+        </div>
+        <div class="card">
+          <a href="#hero" class="card-link">
+            <i class="fas fa-tools"></i>
+            <div class="title">Yo‘llarni ta’mirlash</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="container">
+      <h2>Biz haqimizda</h2>
+      <p>
+        Asfalt qilish xizmati sohasida yetakchi bo'lish maqsadida, biz eng yuqori sifatli materiallar va zamonaviy texnologiyalardan foydalanamiz. Mijozlarimizga mustahkam, xavfsiz va estetik jihatdan chiroyli asfalt yuzalarini yaratishda professional yondashuvni taqdim etamiz. Har bir loyiha – bu bizning ishonchimiz va tajribamizning namoyonidir.
+      </p>
+      <p class="additional-desc">
+        Biz sizga sifatli, bardoshli, xavfsiz va ko'zga ko'rinadigan yo'llar va yuzalarni ta'minlaydigan professional asfalt xizmatini taqdim etadi. 20 yillik tajribaga ega bo'lgan holda, biz loyihalarni o'z vaqtida va eng yuqori sifat standartlariga amalga oshirish uchun yuqori sifatli materiallar va eng so'nggi texnikalardan foydalanamiz.
+      </p>
+    </div>
+  </section>
+  
+  <!-- Modal for Contact -->
+  <div id="contactModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="document.getElementById('contactModal').style.display='none'">&times;</button>
+      <h3>Aloqa</h3>
+      <p>Telefon: 94 720 34 07</p>
+      <p>Email: info@asfalt.uz</p>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Asfalt qilish xizmati. Barcha huquqlar himoyalangan.</p>
+    </div>
+  </footer>
+</body>
+</html>
