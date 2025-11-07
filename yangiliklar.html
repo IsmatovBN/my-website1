@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <title>Yangiliklar - EliteAsphalt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <base href="/">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { primary: "#1a365d", secondary: "#4a5568", accent: "#f59e0b", lightBg: "#f7fafc" },
+          borderRadius: { none: "0px", sm: "0.25rem", DEFAULT: "0.5rem", md: "0.75rem", lg: "1rem", xl: "1.25rem", "2xl": "1.5rem", "3xl": "2rem", full: "9999px", button: "0.5rem" },
+          boxShadow: {
+            card: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+            "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
+          }
+        }
+      }
+    };
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script>async function getAllPosts(t){let r=[],l=[];try{const a=await fetch("/api/"+t);a.ok&&(r=await a.json())}catch{}try{const a=JSON.parse(localStorage.getItem("adminPosts")||"[]");l=a.filter(a=>a.type===t)}catch{}return[...r,...l].filter((t,a,e)=>e.findIndex(a=>a.id===t.id)===a)}</script>
+  <style>
+    body { font-family: 'Inter', sans-serif; color: #4a5568; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    html { scroll-behavior: smooth; }
+    .dark { background: #111827; color: #e5e7eb; }
+    .dark .bg-white { background: #1f2937; }
+    .dark .text-gray-800 { color: #e5e7eb; }
+    .dark .text-gray-600 { color: #9ca3af; }
+    .dark .border-gray-200 { border-color: #374151; }
+    .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .news-card { transition: transform .2s ease, box-shadow .2s ease; }
+    .news-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+  </style>
+</head>
+<body class="bg-lightBg dark:bg-gray-900">
+  <!-- ===== HEADER (unchanged) ===== -->
+  <header class="fixed w-full bg-white shadow-md z-40 top-0 transition-default" style="background-color: rgba(255, 255, 255, 0.97);">
+  <nav class="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
+    <div class="flex items-center justify-between">
+      <a href="/" class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-primary tracking-tight flex items-center">
+        <img src="https://png.pngtree.com/png-clipart/20220303/original/pngtree-construction-of-road-roller-and-urban-construction-png-image_7381746.png" alt="EliteAsphalt Logo - Road Roller Icon" class="h-8 sm:h-10 inline-block mr-2"> ASFALT
+      </a>
+
+      <!-- DESKTOP NAV + LANGUAGE DROPDOWN -->
+      <div class="flex items-center">
+        <div class="hidden md:flex space-x-4 lg:space-x-7">
+          <a href="/" class="text-secondary hover:text-primary font-medium transition-default nav-link-icon-shake flex items-center"><i class="ri-home-line mr-1"></i>Asosiy</a>
+          <a href="/#services" class="text-secondary hover:text-primary font-medium transition-default nav-link-icon-shake flex items-center"><i class="ri-settings-4-line mr-1"></i>Xizmatlar</a>
+          <a href="/yangiliklar.html" class="text-secondary hover:text-primary font-medium transition-default nav-link-icon-shake flex items-center text-primary"><i class="ri-newspaper-line mr-1"></i>Yangiliklar</a>
+          <a href="/loyihalar.html" class="text-secondary hover:text-primary font-medium transition-default nav-link-icon-shake flex items-center"><i class="ri-folder-line mr-1"></i>Loyihalar</a>
+          <a href="/#why-us" class="text-secondary hover:text-primary font-medium transition-default nav-link-icon-shake flex items-center"><i class="ri-question-line mr-1"></i>Nega Biz</a>
+          <a href="/#contact" class="text-secondary hover:text-primary font-medium transition-default nav-link-icon-shake flex items-center"><i class="ri-mail-line mr-1"></i>Aloqa</a>
+        </div>
+
+        <div class="flex items-center ml-4 lg:ml-8">
+          <div class="hidden lg:flex text-base xl:text-lg font-semibold text-primary mr-4 lg:mr-6 items-center">
+            <i class="ri-phone-fill mr-2 text-accent"></i>
+            <a href="tel:+998947203407" class="whitespace-nowrap hover:underline">+998 94 720 34 07</a>
+          </div>
+
+          <!-- LANGUAGE DROPDOWN (same as index.html) -->
+          <div class="relative mr-3 lg:mr-5">
+            <button id="lang-toggle" class="flex items-center text-secondary hover:text-primary focus:outline-none transition-default">
+              <i class="ri-global-line text-xl"></i>
+              <span class="current-lang ml-1 font-medium">O‘ZB</span>
+              <i class="ri-arrow-down-s-line ml-1"></i>
+            </button>
+            <div id="lang-dropdown" class="hidden absolute top-full right-0 bg-white shadow-xl rounded-md py-2 w-36 mt-2 z-50 border border-gray-100">
+              <a href="/uzb/" class="block px-4 py-2 hover:bg-lightBg text-sm text-secondary hover:text-primary transition-default">O‘zbekcha</a>
+              <a href="/kr/" class="block px-4 py-2 hover:bg-lightBg text-sm text-secondary hover:text-primary transition-default">Ўзбекча</a>
+              <a href="/rus/" class="block px-4 py-2 hover:bg-lightBg text-sm text-secondary hover:text-primary transition-default">Русский</a>
+              <a href="/eng/" class="block px-4 py-2 hover:bg-lightBg text-sm text-secondary hover:text-primary transition-default">English</a>
+            </div>
+          </div>
+
+          <a href="tel:+998947203407" class="hidden md:inline-block bg-primary text-white px-5 lg:px-6 py-2.5 rounded-button font-semibold hover:bg-opacity-80 cursor-pointer whitespace-nowrap text-sm lg:text-base transition-default shadow-sm hover:shadow-md">Narx So'rash</a>
+          <button class="md:hidden w-10 h-10 flex items-center justify-center ml-2 text-primary hover:text-accent transition-default" id="mobile-menu-button" aria-label="Open menu"><i class="ri-menu-3-line text-2xl"></i></button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MOBILE MENU (same structure as index.html) -->
+    <div class="md:hidden fixed inset-0 bg-black bg-opacity-60 z-50 transition-opacity duration-300 hidden" id="mobile-menu-overlay">
+      <div class="fixed inset-y-0 right-0 max-w-sm w-full bg-white shadow-xl overflow-y-auto transition-transform transform duration-300 ease-in-out">
+        <div class="flex justify-between items-center p-5 border-b border-gray-200">
+          <a href="/" class="text-xl font-extrabold text-primary tracking-tight flex items-center">
+            <img src="https://png.pngtree.com/png-clipart/20220303/original/pngtree-construction-of-road-roller-and-urban-construction-png-image_7381746.png" alt="EliteAsphalt Logo" class="h-8 inline-block mr-2"> ASFALT
+          </a>
+          <button class="p-2 text-primary hover:text-accent transition-default" id="close-mobile-menu" aria-label="Close menu"><i class="ri-close-line text-3xl"></i></button>
+        </div>
+        <div class="space-y-3 p-5">
+          <a href="/" class="block mobile-nav-link nav-link-icon-shake"><div class="flex items-center justify-between bg-lightBg rounded-md px-4 py-3.5 hover:bg-primary hover:text-white group transition-default"><span class="text-lg font-medium text-secondary group-hover:text-white"><i class="ri-home-line mr-2 text-xl"></i>Asosiy</span><i class="ri-arrow-right-s-line text-gray-400 group-hover:text-white text-xl"></i></div></a>
+          <a href="/#services" class="block mobile-nav-link nav-link-icon-shake"><div class="flex items-center justify-between bg-lightBg rounded-md px-4 py-3.5 hover:bg-primary hover:text-white group transition-default"><span class="text-lg font-medium text-secondary group-hover:text-white"><i class="ri-settings-4-line mr-2 text-xl"></i>Xizmatlar</span><i class="ri-arrow-right-s-line text-gray-400 group-hover:text-white text-xl"></i></div></a>
+          <a href="/yangiliklar.html" class="block mobile-nav-link nav-link-icon-shake"><div class="flex items-center justify-between bg-lightBg rounded-md px-4 py-3.5 bg-primary text-white group transition-default"><span class="text-lg font-medium text-white"><i class="ri-newspaper-line mr-2 text-xl"></i>Yangiliklar</span><i class="ri-arrow-right-s-line text-gray-200 group-hover:text-white text-xl"></i></div></a>
+          <a href="/loyihalar.html" class="block mobile-nav-link nav-link-icon-shake"><div class="flex items-center justify-between bg-lightBg rounded-md px-4 py-3.5 hover:bg-primary hover:text-white group transition-default"><span class="text-lg font-medium text-secondary group-hover:text-white"><i class="ri-folder-line mr-2 text-xl"></i>Loyihalar</span><i class="ri-arrow-right-s-line text-gray-400 group-hover:text-white text-xl"></i></div></a>
+          <a href="/#why-us" class="block mobile-nav-link nav-link-icon-shake"><div class="flex items-center justify-between bg-lightBg rounded-md px-4 py-3.5 hover:bg-primary hover:text-white group transition-default"><span class="text-lg font-medium text-secondary group-hover:text-white"><i class="ri-question-line mr-2 text-xl"></i>Nega Biz</span><i class="ri-arrow-right-s-line text-gray-400 group-hover:text-white text-xl"></i></div></a>
+          <a href="/#contact" class="block mobile-nav-link nav-link-icon-shake"><div class="flex items-center justify-between bg-lightBg rounded-md px-4 py-3.5 hover:bg-primary hover:text-white group transition-default"><span class="text-lg font-medium text-secondary group-hover:text-white"><i class="ri-mail-line mr-2 text-xl"></i>Aloqa</span><i class="ri-arrow-right-s-line text-gray-400 group-hover:text-white text-xl"></i></div></a>
+          <div class="pt-8 border-t border-gray-200 mt-5">
+            <a href="tel:+998947203407" class="block bg-primary text-white px-6 py-3.5 rounded-button hover:bg-opacity-80 cursor-pointer text-lg font-semibold mx-auto text-center w-full mb-5 transition-default shadow-md hover:shadow-lg">Narx So'rash</a>
+            <div class="flex items-center justify-center text-primary font-medium"><i class="ri-phone-fill mr-2 text-accent"></i><a href="tel:+998947203407" class="hover:underline">+998 94 720 34 07</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- ===== END HEADER ===== -->
+
+  <main id="main-content" style="padding-top:88px">
+    <section class="py-16 md:py-24 bg-white dark:bg-gray-900">
+      <div class="container mx-auto px-6">
+        <!-- centred hero -->
+<div class="relative mb-12 md:mb-16 rounded-2xl overflow-hidden
+            h-24 sm:h-32 md:h-48
+            flex items-center justify-center">
+
+  <!-- backgrounds (same as before) -->
+  <div class="absolute inset-0 hidden md:block bg-cover bg-center"
+       style="background-image:url('https://cdn.pixabay.com/photo/2019/03/11/21/22/city-4049541_1280.png')"></div>
+  <div class="absolute inset-0 md:hidden bg-cover bg-center"
+       style="background-image:url('https://cdn.pixabay.com/photo/2019/03/11/21/22/city-4049541_1280.png')"></div>
+  <div class="absolute inset-0 bg-black/40"></div>
+
+  <!-- text -->
+  <div class="relative z-10 text-center px-6 text-white">
+    <h1 class="text-lg sm:text-xl md:text-4xl font-extrabold"
+        style="text-shadow:0 2px 4px rgba(0,0,0,.5);">
+      Yangiliklar
+    </h1>
+    <p class="text-xs sm:text-sm md:text-lg mt-1 md:mt-2"
+       style="text-shadow:0 1px 3px rgba(0,0,0,.5);">
+      Kompaniyamizdagi so'nggi yangiliklar va afzalliklardan xabardor bo'ling.
+    </p>
+  </div>
+</div>
+
+        <!--  dynamic grid  -->
+        <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+          <p class="text-secondary">Yuklanmoqda…</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER (unchanged) ===== -->
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div>
+          <a href="/" class="text-2xl font-extrabold tracking-tight mb-4 inline-block flex items-center">
+            <img src="https://png.pngtree.com/png-clipart/20220303/original/pngtree-construction-of-road-roller-and-urban-construction-png-image_7381746.png" alt="EliteAsphalt Logo" class="h-10 inline-block">
+          </a>
+          <p class="text-gray-400 text-sm leading-relaxed">25 yildan ortiq tajriba bilan O'zbekiston bo'ylab sifatli asfalt yotqizish va ta'mirlash xizmatlarini taqdim etamiz.</p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-5 text-gray-200">Sahifalar</h4>
+          <ul class="space-y-3">
+            <li><a href="/" class="text-gray-400 hover:text-accent transition-default text-sm">Asosiy</a></li>
+            <li><a href="/#services" class="text-gray-400 hover:text-accent transition-default text-sm">Xizmatlar</a></li>
+            <li><a href="/yangiliklar.html" class="text-gray-400 hover:text-accent transition-default text-sm">Yangiliklar</a></li>
+            <li><a href="/loyihalar.html" class="text-gray-400 hover:text-accent transition-default text-sm">Loyihalar</a></li>
+            <li><a href="/#why-us" class="text-gray-400 hover:text-accent transition-default text-sm">Nega Biz</a></li>
+            <li><a href="/#contact" class="text-gray-400 hover:text-accent transition-default text-sm">Aloqa</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-5 text-gray-200">Aloqa Ma'lumotlari</h4>
+          <ul class="space-y-3 text-gray-400 text-sm">
+            <li class="flex items-start"><i class="ri-map-pin-line mr-2.5 mt-0.5 text-accent"></i>Toshkent, Chilonzor tumani.</li>
+            <li class="flex items-start"><i class="ri-phone-line mr-2.5 mt-0.5 text-accent"></i><a href="tel:+998947203407" class="hover:text-accent transition-default">+998 94 720 34 07</a></li>
+            <li class="flex items-start"><i class="ri-mail-send-line mr-2.5 mt-0.5 text-accent"></i><a href="mailto:info@eliteasphalt.com" class="hover:text-accent transition-default">info@eliteasphalt.com</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-5 text-gray-200">Ijtimoiy Tarmoqlar</h4>
+          <div class="flex space-x-3">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-10 rounded-full hover:bg-accent hover:text-primary transition-default group"><i class="ri-facebook-fill text-xl text-gray-300 group-hover:text-primary"></i></a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-10 rounded-full hover:bg-accent hover:text-primary transition-default group"><i class="ri-instagram-line text-xl text-gray-300 group-hover:text-primary"></i></a>
+            <a href="https://t.me/yourtelegram" target="_blank" rel="noopener noreferrer" aria-label="Telegram" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-10 rounded-full hover:bg-accent hover:text-primary transition-default group"><i class="ri-telegram-line text-xl text-gray-300 group-hover:text-primary"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-10 pt-8 text-center text-gray-500 text-xs">
+        <p>© <span id="currentYear"></span> EliteAsphalt. Barcha huquqlar himoyalangan. Vebsayt <a href="https://readdy.ai" target="_blank" rel="noopener" class="hover:text-accent">Readdy.ai</a> tomonidan yaxshilandi.</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://t.me/Asfaltishlaruz" class="telegram-icon-fixed" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="ri-telegram-fill"></i></a>
+  <script>
+/* ---------- pagination vars ---------- */
+const POSTS_PER_PAGE = 30;
+let currentPage = 1;
+let allNews = [];
+
+/* Load only news posts from server, exclude admin localStorage posts */
+async function loadNewsPosts() {
+  try {
+    const response = await fetch('/api/news');
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.error('Error loading news:', error);
+  }
+  return [];
+}
+
+/* ---------- render one page ---------- */
+function renderPage() {
+  const grid = document.getElementById('news-grid');
+  const start = (currentPage - 1) * POSTS_PER_PAGE;
+  const end   = start + POSTS_PER_PAGE;
+  const pageItems = allNews.slice(start, end);
+
+  /* ----- equal-height cards ----- */
+  grid.innerHTML = pageItems.map(n => `
+    <article class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition news-card flex flex-col">
+      <img src="${n.img||'https://placehold.co/600x400/e2e8f0/4a5568?text=Yangilik'}" alt="${n.title}" class="w-full h-48 object-cover">
+      <div class="p-6 flex flex-col flex-1">
+        <time class="text-xs bg-accent/10 text-accent px-2 py-1 rounded self-start mb-2">${n.date}</time>
+        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2 line-clamp-2">${n.title}</h2>
+        <p class="text-secondary dark:text-gray-300 text-sm leading-relaxed line-clamp-3 flex-1">${n.body}</p>
+        <a href="/post.html?type=news&id=${encodeURIComponent(n.id||n.title)}" class="text-accent text-xs mt-3 inline-block">Read more →</a>
+      </div>
+    </article>`).join('');
+
+  /* ----- separator line ----- */
+  if (!document.querySelector('#headline-hr')) {
+    const hr = document.createElement('hr');
+    hr.id = 'headline-hr';
+    hr.className = 'my-8 border-gray-300 dark:border-gray-700';
+    grid.parentElement.insertBefore(hr, grid);
+  }
+
+  renderPagination();
+}
+
+/* ----- pagination navigator ----- */
+function renderPagination() {
+  const totalPages = Math.ceil(allNews.length / POSTS_PER_PAGE);
+  if (totalPages <= 1) return;               // nothing to page
+
+  let html = '<div class="flex justify-center items-center gap-2 mt-10">';
+  for (let i = 1; i <= totalPages; i++) {
+    html += `
+      <button class="px-3 py-1 rounded border ${
+        i === currentPage
+          ? 'bg-primary text-white'
+          : 'bg-white dark:bg-gray-800 text-primary border-primary hover:bg-primary hover:text-white transition'
+      }" onclick="goPage(${i})">${i}</button>`;
+  }
+  html += '</div>';
+  const old = document.getElementById('pagination-nav');
+  if (old) old.remove();
+  const nav = document.createElement('div');
+  nav.id = 'pagination-nav';
+  nav.innerHTML = html;
+  document.getElementById('main-content').appendChild(nav);
+}
+
+function goPage(page) {
+  currentPage = page;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  renderPage();
+}
+
+  /* ===== LANGUAGE & MOBILE-MENU (copied from index.html) ===== */
+  document.addEventListener("DOMContentLoaded", () => {
+    /* --- Language Dropdown --- */
+    const langToggle = document.getElementById('lang-toggle');
+    const langDropdown = document.getElementById('lang-dropdown');
+    if (langToggle && langDropdown) {
+      langToggle.addEventListener('click', e => {
+        e.stopPropagation();
+        langDropdown.classList.toggle('hidden');
+      });
+      document.addEventListener('click', () => langDropdown.classList.add('hidden'));
+    }
+
+    /* --- Mobile Menu --- */
+    const mobileMenuButton = document.getElementById("mobile-menu-button");
+    const mobileMenuOverlay = document.getElementById("mobile-menu-overlay");
+    const closeMobileMenuButton = document.getElementById("close-mobile-menu");
+    const closeMenu = () => {
+      mobileMenuOverlay?.classList.add("hidden");
+      document.body.style.overflow = "";
+    };
+    mobileMenuButton?.addEventListener("click", () => {
+      mobileMenuOverlay?.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    });
+    closeMobileMenuButton?.addEventListener("click", closeMenu);
+    mobileMenuOverlay?.addEventListener("click", e => {
+      if (e.target === mobileMenuOverlay) closeMenu();
+    });
+
+    /* --- Current Language Label --- */
+    const currentLangDisplay = document.querySelector(".current-lang");
+    if (currentLangDisplay) {
+      const path = window.location.pathname;
+      if (path.includes("/eng/")) currentLangDisplay.textContent = "ENG";
+      else if (path.includes("/rus/")) currentLangDisplay.textContent = "РУС";
+      else if (path.includes("/uzb/")) currentLangDisplay.textContent = "O'ZB";
+      else if (path.includes("/kr/")) currentLangDisplay.textContent = "ЎЗБ";
+    }
+  });
+
+/* ----- initial load ----- */
+(async () => {
+  const grid = document.getElementById('news-grid');
+  try {
+    allNews = await loadNewsPosts();
+    if (!allNews.length) throw 0;
+
+    /* 1. newest first */
+    allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    /* 2. normalise pictures */
+    allNews.forEach(n => {
+      if (!n.img && n.images?.length) n.img = n.images[0]; // pick first image
+      if (!n.img && n.cover)            n.img = n.cover;
+    });
+
+    renderPage();            // first draw
+  } catch {
+    grid.innerHTML = `<p class="text-red-500">Ma'lumot yuklanmadi.</p>`;
+  }
+})();
+
+/* ----- footer year ----- */
+document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
+</body>
+<style>
+  /* keep a decent distance from the static header */
+  #main-content { padding-top: 1.5rem !important; }
+</style>
+</html>
