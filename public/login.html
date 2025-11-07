@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <title>Kirish – EliteAsphalt</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{background:#f7fafc;}</style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+  <form id="loginForm"
+        class="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm space-y-4">
+    <h1 class="text-2xl font-bold text-center text-primary">EliteAsphalt</h1>
+
+    <input id="user" type="text" required placeholder="Login"
+           class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent">
+    <input id="pass" type="password" required placeholder="Parol"
+           class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent">
+    <button type="submit"
+            class="w-full bg-accent text-primary font-semibold py-2 rounded-lg hover:bg-yellow-500 transition">
+      Kirish
+    </button>
+    <p id="err" class="text-red-600 text-sm text-center hidden">Login yoki parol xato</p>
+  </form>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const body = JSON.stringify({
+        login: document.getElementById('user').value,
+        password: document.getElementById('pass').value
+      });
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body
+      });
+      if (!res.ok) return document.getElementById('err').classList.remove('hidden');
+
+      const { accessToken } = await res.json();
+      localStorage.setItem('ea_at', accessToken);
+      location.href = 'admin.html';
+    });
+  </script>
+</body>
+</html>

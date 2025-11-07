@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <title>Admin - EliteAsphalt</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#1a365d",
+            secondary: "#4a5568",
+            accent: "#f59e0b",
+            lightBg: "#f7fafc",
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-lightBg text-secondary font-inter">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-primary text-white transform -translate-x-full lg:translate-x-0 transition">
+    <div class="flex items-center justify-between p-4 border-b border-white/10">
+      <h1 class="text-xl font-bold">EliteAsphalt</h1>
+      <button id="closeSidebar" class="lg:hidden text-2xl"><i class="ri-close-line"></i></button>
+    </div>
+    <nav class="p-4 space-y-3">
+      <a href="#create" class="nav-link"><i class="ri-add-circle-line mr-2"></i>Yangi post</a>
+      <a href="#list" class="nav-link"><i class="ri-list-check mr-2"></i>Postlar</a>
+      <a href="/admin-stats.html" class="nav-link"><i class="ri-bar-chart-2-line mr-2"></i>Statistika</a>
+      <a href="/" target="_blank" class="nav-link"><i class="ri-eye-line mr-2"></i>Saytga o'tish</a>
+      <button onclick="forceRefresh()" class="nav-link">
+        <i class="ri-refresh-line mr-2"></i>Yangilash
+      </button>
+      <button onclick="logout()" class="nav-link text-red-300 hover:text-red-100">
+        <i class="ri-logout-box-line mr-2"></i>Chiqish
+      </button>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="min-h-screen lg:ml-64 p-6">
+    <div class="lg:hidden flex items-center justify-between mb-6">
+      <h2 class="text-xl font-bold text-primary">Admin</h2>
+      <button id="openSidebar" class="text-2xl text-primary"><i class="ri-menu-line"></i></button>
+    </div>
+
+    <!-- CREATE / EDIT SECTION -->
+    <section id="create" class="bg-white rounded-2xl shadow-card p-6 mb-6">
+      <h3 id="formTitle" class="text-lg font-bold text-primary mb-4">Yangi post yaratish</h3>
+      <form id="postForm" onsubmit="savePost(event)">
+        <input type="hidden" id="editType">
+        <input type="hidden" id="editOldTitle">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div class="relative">
+            <i class="ri-list-check absolute top-3 left-3 text-gray-400"></i>
+            <select id="type" required class="pl-10 w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-accent outline-none">
+              <option value="">Tanlang...</option>
+              <option value="news">Yangilik</option>
+              <option value="projects">Loyiha</option>
+            </select>
+          </div>
+          <div class="relative">
+            <i class="ri-edit-line absolute top-3 left-3 text-gray-400"></i>
+            <input id="title" type="text" required placeholder="Sarlavha" class="pl-10 w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-accent outline-none">
+          </div>
+        </div>
+        <div class="relative mb-4">
+          <i class="ri-file-text-line absolute top-3 left-3 text-gray-400"></i>
+          <textarea id="body" required rows="5" placeholder="Matn" class="pl-10 w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-accent outline-none resize-none"></textarea>
+        </div>
+
+        <!-- Photos -->
+        <label class="block mb-2 font-medium text-gray-700">Rasmlar</label>
+        <div class="flex gap-2 items-center mb-2">
+          <input id="imgUrls" type="text" placeholder="https://a.jpg, https://b.jpg" class="flex-1 border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent outline-none">
+          <input id="imgFiles" type="file" multiple accept="image/*" class="hidden">
+          <button type="button" onclick="imgFiles.click()" class="px-3 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 active:scale-95 transition">Yuklash</button>
+        </div>
+        <div id="imgPreview" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 mb-4"></div>
+
+        <!-- Video -->
+        <label class="block mb-2 font-medium text-gray-700">Video (YouTube / Vimeo / fayl)</label>
+        <div class="flex gap-2 items-center mb-2">
+          <input id="videoUrl" type="text" placeholder="https://youtube.com/..." class="flex-1 border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent outline-none">
+          <input id="videoFile" type="file" accept="video/*" class="hidden">
+          <button type="button" onclick="videoFile.click()" class="px-3 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 active:scale-95 transition">Yuklash</button>
+        </div>
+        <div id="videoPreview" class="mb-4"></div>
+
+        <div class="flex items-center gap-4">
+          <button type="submit" class="bg-accent text-primary px-6 py-2 rounded-lg font-semibold hover:bg-yellow-500 active:scale-95 transition">🚀 Saqlash</button>
+          <button type="button" onclick="cancelEdit()" class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 active:scale-95 transition">Bekor</button>
+          <span id="msg" class="text-sm"></span>
+        </div>
+      </form>
+    </section>
+
+    <!-- SEARCH -->
+    <section id="searchBar" class="bg-white rounded-2xl shadow-card p-4 mb-6">
+      <div class="relative max-w-md">
+        <i class="ri-search-line absolute top-3 left-3 text-gray-400"></i>
+        <input id="searchInput" type="text" placeholder="Sarlavha yoki matn bo'yicha izlash..." class="pl-10 w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-accent outline-none">
+      </div>
+    </section>
+
+    <!-- POSTS TABLE -->
+    <section id="list" class="bg-white rounded-2xl shadow-card p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold text-primary">Postlar</h3>
+        <button onclick="forceRefresh()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition text-sm">
+          <i class="ri-refresh-line mr-1"></i>Yangilash
+        </button>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="border-b">
+            <tr>
+              <th class="text-left py-2">Turi</th>
+              <th class="text-left py-2">Sarlavha</th>
+              <th class="text-left py-2">Sana</th>
+              <th class="text-left py-2">Rasm</th>
+              <th class="text-left py-2">Video</th>
+              <th class="text-right py-2">Amallar</th>
+            </tr>
+          </thead>
+          <tbody id="preview">
+            <tr><td colspan="6" class="py-4 text-center text-gray-500">Yuklanmoqda...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const BASE = '/api';
+    const $ = id => document.getElementById(id);
+    let allPosts = [];
+
+    /* ---------- sidebar ---------- */
+    const sidebar = $('sidebar');
+    $('openSidebar').onclick = () => sidebar.classList.remove('-translate-x-full');
+    $('closeSidebar').onclick = () => sidebar.classList.add('-translate-x-full');
+
+    /* ---------- toast ---------- */
+    function toast(msg, ok = true) {
+      const t = $('msg');
+      t.textContent = msg;
+      t.className = ok ? 'text-sm text-green-600' : 'text-sm text-red-600';
+      setTimeout(() => t.textContent = '', 3000);
+    }
+
+    /* ---------- photo handling ---------- */
+    let photoArray = [];
+    $('imgFiles').onchange = e => {
+      [...e.target.files].forEach(f => {
+        photoArray.push({ url: URL.createObjectURL(f), file: f });
+        renderPhotos();
+      });
+    };
+    $('imgUrls').onchange = () => {
+      $('imgUrls').value.split(',').forEach(u => {
+        const url = u.trim();
+        if (url) photoArray.push({ url, file: null });
+      });
+      renderPhotos();
+    };
+    function renderPhotos() {
+      const box = $('imgPreview');
+      box.innerHTML = photoArray.map((p, i) => `
+        <div class="relative group">
+          <img src="${p.url}" class="w-full h-24 object-cover rounded border">
+          <button type="button" onclick="removePhoto(${i})" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 text-xs opacity-0 group-hover:opacity-100 transition">✕</button>
+        </div>`).join('');
+    }
+    function removePhoto(i) {
+      photoArray.splice(i, 1);
+      renderPhotos();
+    }
+
+    /* ---------- video handling ---------- */
+    let videoObj = null;
+    $('videoFile').onchange = e => {
+      const f = e.target.files[0];
+      if (!f) return;
+      videoObj = { url: URL.createObjectURL(f), file: f };
+      renderVideo();
+    };
+    $('videoUrl').onchange = () => {
+      const url = $('videoUrl').value.trim();
+      if (!url) return;
+      videoObj = { url, file: null };
+      renderVideo();
+    };
+    function renderVideo() {
+      const box = $('videoPreview');
+      if (!videoObj) return box.innerHTML = '';
+      box.innerHTML = `
+        <div class="relative inline-block group">
+          <video src="${videoObj.url}" controls class="w-64 rounded border"></video>
+          <button type="button" onclick="removeVideo()" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 text-xs">✕</button>
+        </div>`;
+    }
+    function removeVideo() {
+      videoObj = null;
+      renderVideo();
+    }
+
+    /* ---------- save (create or update) ---------- */
+    async function savePost(e) {
+      e.preventDefault();
+      const type = $('type').value;
+      const title = $('title').value.trim();
+      const oldTitle = $('editOldTitle').value;
+      
+      if (!title || title.length < 3) {
+        toast('❌ Sarlavha kamida 3 ta belgidan iborat bo\'lishi kerak', false);
+        return;
+      }
+      
+      if (!$('body').value.trim() || $('body').value.trim().length < 10) {
+        toast('❌ Matn kamida 10 ta belgidan iborat bo\'lishi kerak', false);
+        return;
+      }
+
+      const payload = {
+        title: title,
+        body: $('body').value.trim(),
+        date: new Date().toISOString().slice(0, 10),
+        images: photoArray.map(p => p.url),
+        video: videoObj ? videoObj.url : '',
+      };
+
+      const method = oldTitle ? 'PUT' : 'POST';
+      const endpoint = oldTitle 
+        ? `${BASE}/${type}/${encodeURIComponent(oldTitle)}`
+        : `${BASE}/${type}`;
+
+      try {
+        console.log('Saving post:', method, endpoint, payload);
+        const res = await fetch(endpoint, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        
+        if (res.ok) {
+          toast(oldTitle ? '✅ Yangilandi' : '✅ Saqlandi');
+          console.log('Post saved successfully');
+          cancelEdit();
+          setTimeout(() => loadPreview(), 500); // Wait 500ms then refresh
+        } else {
+          const error = await res.text();
+          toast(`❌ Xato: ${error}`, false);
+          console.error('Save error:', error);
+        }
+      } catch (err) {
+        toast('❌ Tarmoq xatosi', false);
+        console.error('Network error:', err);
+      }
+    }
+
+    /* ---------- cancel edit mode ---------- */
+    function cancelEdit() {
+      $('postForm').reset();
+      photoArray = [];
+      videoObj = null;
+      renderPhotos();
+      renderVideo();
+      $('editType').value = '';
+      $('editOldTitle').value = '';
+      $('formTitle').textContent = 'Yangi post yaratish';
+    }
+
+    /* ---------- delete ---------- */
+    async function deletePost(type, title) {
+      if (!confirm(`"${title}" ni o'chirmoqchimisiz?`)) return;
+      
+      try {
+        console.log('Deleting post:', type, title);
+        const res = await fetch(`${BASE}/${type}/${encodeURIComponent(title)}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        
+        if (res.ok) {
+          toast('✅ O\'chirildi');
+          console.log('Post deleted successfully');
+          loadPreview();
+        } else {
+          const error = await res.text();
+          toast(`❌ O'chirishda xato: ${error}`, false);
+          console.error('Delete error:', error);
+        }
+      } catch (err) {
+        toast('❌ Tarmoq xatosi', false);
+        console.error('Delete network error:', err);
+      }
+    }
+
+    /* ---------- edit ---------- */
+    function editPost(type, title, body, images, video) {
+      console.log('Editing post:', title, 'Type:', type);
+      $('type').value = type;
+      $('title').value = title;
+      $('body').value = body;
+      $('editType').value = type;
+      $('editOldTitle').value = title;
+
+      photoArray = (images || []).map(u => ({ url: u, file: null }));
+      renderPhotos();
+      if (video) {
+        videoObj = { url: video, file: null };
+        renderVideo();
+      }
+      $('formTitle').textContent = 'Tahrirlash';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ---------- search ---------- */
+    $('searchInput').oninput = () => {
+      const q = $('searchInput').value.toLowerCase();
+      const rows = [...$('preview').children];
+      rows.forEach(r => {
+        const txt = r.textContent.toLowerCase();
+        r.style.display = txt.includes(q) ? '' : 'none';
+      });
+    };
+
+    /* ---------- load table ---------- */
+    async function loadPreview() {
+      console.log('Loading posts...');
+      try {
+        // Load news posts
+        let newsPosts = [];
+        try {
+          const newsRes = await fetch(`${BASE}/news`);
+          if (newsRes.ok) {
+            newsPosts = await newsRes.json();
+            console.log('News posts loaded:', newsPosts.length);
+          } else {
+            console.log('News API returned:', newsRes.status);
+          }
+        } catch (e) {
+          console.log('News loading error:', e);
+        }
+
+        // Load project posts
+        let projPosts = [];
+        try {
+          const projRes = await fetch(`${BASE}/projects`);
+          if (projRes.ok) {
+            projPosts = await projRes.json();
+            console.log('Project posts loaded:', projPosts.length);
+          } else {
+            console.log('Projects API returned:', projRes.status);
+          }
+        } catch (e) {
+          console.log('Projects loading error:', e);
+        }
+
+        // Combine posts
+        allPosts = [
+          ...newsPosts.map(o => ({ ...o, kind: 'Yangilik', type: 'news' })),
+          ...projPosts.map(o => ({ ...o, kind: 'Loyiha', type: 'projects' })),
+        ].sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+
+        console.log('Total posts to display:', allPosts.length);
+        renderTable(allPosts);
+        
+        if (allPosts.length === 0) {
+          $('preview').innerHTML = '<tr><td colspan="6" class="py-4 text-center text-gray-500">Hozircha post yo‘q</td></tr>';
+        }
+      } catch (error) {
+        console.error('Load preview error:', error);
+        $('preview').innerHTML = '<tr><td colspan="6" class="py-4 text-center text-red-500">Ma\'lumot yuklashda xato yuz berdi</td></tr>';
+      }
+    }
+
+    function renderTable(list) {
+      console.log('Rendering table with', list.length, 'posts');
+      const preview = $('preview');
+      
+      if (!list || list.length === 0) {
+        preview.innerHTML = '<tr><td colspan="6" class="py-4 text-center text-gray-500">Postlar topilmadi</td></tr>';
+        return;
+      }
+
+      preview.innerHTML = list.map((o, index) => {
+        const title = (o.title || 'Noma\'lum').replace(/"/g, '&quot;');
+        const body = (o.body || '').replace(/"/g, '&quot;');
+        const images = o.images || o.img || [];
+        
+        return `
+          <tr class="border-b hover:bg-gray-50">
+            <td class="py-2"><span class="text-xs bg-gray-200 px-2 py-1 rounded">${o.kind || o.type}</span></td>
+            <td class="py-2 font-medium">${title}</td>
+            <td class="py-2 text-gray-500">${o.date || 'Noma\'lum'}</td>
+            <td class="py-2">${images.length ? '📷 ' + images.length : ''}</td>
+            <td class="py-2">${o.video ? '📹' : ''}</td>
+            <td class="py-2 text-right space-x-2">
+              <button onclick='editPost("${o.type || 'news'}", "${title}", "${body}", ${JSON.stringify(images)}, "${o.video || ""}")' class="text-primary hover:underline">Tahrir</button>
+              <button onclick='deletePost("${o.type || 'news'}", "${title}")' class="text-red-600 hover:underline">O‘chirish</button>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    /* ---------- force refresh ---------- */
+    function forceRefresh() {
+      console.log('Force refreshing posts...');
+      allPosts = [];
+      loadPreview();
+      toast('✅ Ro‘yxat yangilandi');
+    }
+
+    /* ---------- init ---------- */
+    console.log('Admin page loaded');
+    loadPreview();
+  </script>
+
+  <!-- AUTH + LOGOUT -->
+  <script>
+    const getAT = () => localStorage.getItem('ea_at');
+    const saveAT = t => localStorage.setItem('ea_at', t);
+    const clearAuth = () => { localStorage.removeItem('ea_at'); location.href = 'login.html'; };
+
+    (async () => {
+      if (!getAT()) return clearAuth();
+      const r = await fetch('/api/admin/verify', { headers: { authorization: `Bearer ${getAT()}` } });
+      if (!r.ok) await tryRefresh();
+    })();
+
+    async function tryRefresh() {
+      const r = await fetch('/api/refresh', { method: 'POST', credentials: 'include' });
+      if (!r.ok) return clearAuth();
+      const { accessToken } = await r.json();
+      saveAT(accessToken);
+    }
+
+    const _fetch = window.fetch;
+    window.fetch = async (...args) => {
+      let [url, opts = {}] = args;
+      if (url.startsWith('/api/')) {
+        opts.headers = opts.headers || {};
+        opts.headers.authorization = `Bearer ${getAT()}`;
+        let res = await _fetch(url, opts);
+        if (res.status === 401) {
+          await tryRefresh();
+          opts.headers.authorization = `Bearer ${getAT()}`;
+          res = await _fetch(url, opts);
+        }
+        if (res.status === 401 || res.status === 403) clearAuth();
+        return res;
+      }
+      return _fetch(url, opts);
+    };
+
+    function logout() {
+      fetch('/api/logout', { method: 'POST', credentials: 'include' }).finally(clearAuth);
+    }
+  </script>
+</body>
+</html>

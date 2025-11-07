@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="EliteAsphalt loyihasi – sifatli asfalt ishlari.">
+  <title>EliteAsphalt | Article</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#1a365d",
+            secondary: "#4a5568",
+            accent: "#f59e0b",
+            lightBg: "#f7fafc",
+          },
+          borderRadius: {
+            button: "0.5rem",
+          },
+          boxShadow: {
+            card: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+            cardHover: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+          },
+        },
+      },
+    };
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .progress { position: fixed; top: 0; left: 0; height: 3px; background: #f59e0b; z-index: 50; }
+    .back-top { position: fixed; bottom: 1rem; right: 1rem; z-index: 40; display: none; }
+  </style>
+</head>
+<body class="bg-white text-secondary">
+
+<!-- Progress bar -->
+<div id="progress" class="progress w-0"></div>
+
+<!-- ================= HEADER  (same logo size as index.html) ================= -->
+<header class="bg-white/97 shadow sticky top-0 z-40 backdrop-blur">
+  <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+    <button onclick="history.back()"
+            class="px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-700
+                   hover:bg-gray-100 active:scale-95 transition-all">
+      ← Orqaga
+    </button>
+
+    <a href="/" class="flex items-center gap-2 text-xl font-bold text-primary">
+      <img src="https://png.pngtree.com/png-clipart/20220303/original/pngtree-construction-of-road-roller-and-urban-construction-png-image_7381746.png"
+           alt="EliteAsphalt" class="h-10">
+      EliteAsphalt
+    </a>
+
+    <nav class="hidden md:flex items-center gap-3 text-sm">
+      <a href="/yangiliklar.html" class="text-secondary hover:text-primary transition">Yangiliklar</a>
+      <a href="/loyihalar.html"   class="text-secondary hover:text-primary transition">Loyihalar</a>
+      <a href="tel:+998947203407"
+         class="ml-4 bg-primary text-white px-4 py-2 rounded-lg
+                hover:bg-opacity-90 active:scale-95 transition-all shadow-sm">
+         Narx So‘rash
+      </a>
+    </nav>
+
+    <button id="mobile-menu-button" aria-label="Menu"
+            class="md:hidden w-10 h-10 grid place-content-center text-primary
+                   hover:bg-gray-100 rounded-lg transition">
+      <i class="ri-menu-3-line text-2xl"></i>
+    </button>
+  </div>
+</header>
+
+<!-- ================= MAIN ARTICLE ================= -->
+<main class="container mx-auto px-4 py-10 max-w-4xl">
+  <article id="article" class="bg-white rounded-2xl shadow-card p-6 md:p-10">
+    <!-- content injected by JS -->
+  </article>
+
+  <!-- Author + Share -->
+  <div class="flex flex-wrap justify-between items-center gap-6 mt-10 pt-6 border-t border-gray-200">
+    <div class="flex items-center gap-3">
+      <img src="https://i.pravatar.cc/40?u=elite" alt="Author" class="w-10 h-10 rounded-full">
+      <div>
+        <div class="font-semibold text-gray-800">EliteAsphalt</div>
+        <div class="text-sm text-gray-500">Sifatli asfalt xizmati</div>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap gap-3">
+      <a id="shareFb" target="_blank"
+         class="btn bg-[#1877F2] text-white px-4 py-2 rounded-lg
+                hover:bg-opacity-90 active:scale-95 transition-all shadow">
+        <i class="ri-facebook-fill mr-2"></i>Share
+      </a>
+      <a id="shareTg" target="_blank"
+         class="btn bg-[#0088cc] text-white px-4 py-2 rounded-lg
+                hover:bg-opacity-90 active:scale-95 transition-all shadow">
+        <i class="ri-telegram-fill mr-2"></i>Share
+      </a>
+      <a id="shareWa" target="_blank"
+         class="btn bg-[#25D366] text-white px-4 py-2 rounded-lg
+                hover:bg-opacity-90 active:scale-95 transition-all shadow">
+        <i class="ri-whatsapp-fill mr-2"></i>Share
+      </a>
+      <button onclick="copyLink()"
+              class="btn bg-white text-gray-800 border border-gray-300 px-4 py-2 rounded-lg
+                     hover:bg-gray-50 active:scale-95 transition-all shadow">
+        <i class="ri-link mr-2"></i>Nusxa olish
+      </button>
+    </div>
+  </div>
+</main>
+
+<!-- ================= BACK-TO-TOP ================= -->
+<button id="backTop" class="back-top bg-accent text-primary w-12 h-12 rounded-full shadow-lg
+                             hover:bg-opacity-80 active:scale-95 transition-all grid place-content-center">
+  <i class="ri-arrow-up-s-line text-2xl"></i>
+</button>
+
+<script>
+  /* ---------- load article ---------- */
+  (async () => {
+    const params = new URLSearchParams(location.search);
+    const type = params.get('type');
+    const id   = params.get('id');
+    if (!id || !type) return showError('Post parametri topilmadi');
+
+    try {
+      const data = await fetch(`/api/${type}`).then(r => r.json());
+      const post = data.find(p => (p.id || p.title) === decodeURIComponent(id));
+      if (!post) return showError('Maqola topilmadi');
+
+      /* ---------- normalise pictures ---------- */
+/* ---------- 1. normalise every possible picture shape ---------- */
+let pics = [];
+if (Array.isArray(post.images)) {
+  if (post.images[0]?.url) pics = post.images;          // already [{url,caption}, …]
+  else pics = post.images.map(u => ({ url: u, caption: '' })); // ['…','…'] → objects
+} else if (post.img) {
+  pics = [{ url: post.img, caption: '' }];              // single img string
+}
+
+/* ---------- 2. build full-width rectangles, staggered vertically ---------- */
+const imgHtml = pics.map((img, idx) => `
+  <figure class="my-10 ${idx % 2 ? 'md:ml-auto' : 'md:mr-auto'} max-w-5xl">
+    <img src="${img.url}" alt="${img.caption || post.title}"
+         class="w-full h-64 md:h-96 object-cover rounded-xl shadow-lg">
+    ${img.caption ? `<figcaption class="text-sm text-gray-500 mt-3 text-center">${img.caption}</figcaption>` : ''}
+  </figure>`).join('');
+
+      const bodyHtml = post.body.split('\n').map(p => `<p class="mb-5 text-justify leading-relaxed">${p}</p>`).join('');
+
+      document.getElementById('article').innerHTML = `
+        <header class="mb-8 text-center">
+          <h1 class="text-3xl md:text-4xl font-extrabold text-primary">${post.title}</h1>
+          <div class="text-sm text-gray-500 mt-4">
+            EliteAsphalt · ${post.date} · ${Math.ceil(post.body.split(/\s+/).length / 200)} min o‘qish
+          </div>
+        </header>
+        ${imgHtml}
+        <div class="prose prose-gray max-w-none">${bodyHtml}</div>`;
+
+      /* share links */
+      const url = encodeURIComponent(location.href);
+      const txt = encodeURIComponent(post.title);
+      document.getElementById('shareFb').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+      document.getElementById('shareTg').href = `https://t.me/share/url?url=${url}&text=${txt}`;
+      document.getElementById('shareWa').href = `https://wa.me/?text=${txt}%20${url}`;
+
+    } catch (e) {
+      showError(e.message);
+    }
+  })();
+
+  function showError(msg) {
+    document.getElementById('article').innerHTML = `<p class="text-red-600">${msg}</p>`;
+  }
+  function copyLink() {
+    navigator.clipboard.writeText(location.href);
+    alert('Havola nusxalandi!');
+  }
+
+  /* ---------- progress + back-to-top ---------- */
+  window.onscroll = () => {
+    const st = document.documentElement.scrollTop || document.body.scrollTop;
+    const sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    document.getElementById('progress').style.width = `${(st / sh) * 100}%`;
+    document.getElementById('backTop').style.display = st > 400 ? 'grid' : 'none';
+  };
+  document.getElementById('backTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+</script>
+</body>
+</html>

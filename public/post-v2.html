@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="EliteAsphalt loyihasi – sifatli asfalt ishlari.">
+  <meta property="og:title" content="EliteAsphalt Article">
+  <meta property="og:description" content="Sifatli asfalt yotqizish loyihasi.">
+  <meta property="og:image" content="">
+  <meta property="og:type" content="article">
+  <title>EliteAsphalt | Article</title>
+
+  <!--  same design tokens as your site  -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { primary: "#1a365d", secondary: "#4a5568", accent: "#f59e0b", lightBg: "#f7fafc" }
+        }
+      }
+    };
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #f9f9f9; color: #111; }
+    .content { max-width: 900px; margin: auto; text-align: justify; line-height: 1.8; }
+    h1,h2,h3 { text-align: center; font-weight: 600; margin-bottom: 1.25rem; }
+    h1 { font-size: 2.25rem; } h2 { font-size: 1.75rem; } h3 { font-size: 1.375rem; }
+    img { max-width: 100%; height: auto; margin: 1.5rem auto; display: block; border-radius: .5rem; cursor: pointer; }
+    figure { text-align: center; }
+    figcaption { font-size: .875rem; color: #555; margin-top: .5rem; }
+    .share a { transition: .2s; }
+    .share a:hover { transform: scale(1.1); }
+    /*  light-box  */
+    #lightbox{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:50;cursor:pointer}
+    #lightbox img{max-width:90%;max-height:90%;border-radius:.5rem}
+    /*  fade-in  */
+    .fade-in{animation:fadeIn .6s ease-in-out}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  </style>
+</head>
+<body class="fade-in">
+
+<!--  TOP BAR  -->
+<header class="bg-white shadow sticky top-0 z-40">
+  <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="/" class="text-xl font-bold text-primary flex items-center gap-2">
+      <img src="https://png.pngtree.com/png-clipart/20220303/original/pngtree-construction-of-road-roller-and-urban-construction-png-image_7381746.png" alt="EliteAsphalt" class="h-8"> EliteAsphalt
+    </a>
+    <nav class="flex gap-3 text-sm">
+      <a href="/yangiliklar.html" class="text-secondary hover:text-primary">Yangiliklar</a>
+      <a href="/loyihalar.html"   class="text-secondary hover:text-primary">Loyihalar</a>
+    </nav>
+  </div>
+</header>
+
+<!--  ARTICLE CARD  (white on #f9f9f9)  -->
+<main class="bg-white shadow-lg rounded-2xl p-6 md:p-10 my-10 mx-4">
+  <div class="content" id="article">
+    <!--  injected by JS  -->
+  </div>
+
+  <!--  SHARE  -->
+  <div class="share flex justify-center gap-4 mt-10">
+    <a id="shareFb"  target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-full" title="Facebook"><i class="ri-facebook-fill"></i></a>
+    <a id="shareTg"  target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-500 text-white rounded-full" title="Telegram"><i class="ri-telegram-fill"></i></a>
+    <a id="shareWa"  target="_blank" class="w-10 h-10 flex items-center justify-center bg-green-500 text-white rounded-full" title="WhatsApp"><i class="ri-whatsapp-fill"></i></a>
+  </div>
+
+  <!--  BACK  -->
+  <div class="text-center mt-8">
+    <button onclick="history.back()" class="px-5 py-2 border border-gray-300 rounded hover:bg-gray-100">← Orqaga</button>
+  </div>
+</main>
+
+<!--  LIGHT-BOX  -->
+<div id="lightbox" class="hidden" onclick="this.classList.add('hidden')">
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script>
+  /*  ----------  load article  ----------  */
+  (async () => {
+    const params = new URLSearchParams(location.search);
+    const type   = params.get('type');          // 'news' | 'projects'
+    const id     = params.get('id');            // title or id
+    if (!id || !type) return articleErr('Post parametri topilmadi');
+
+    try {
+      const data   = await fetch(`/api/${type}`).then(r => r.json());
+      const post   = data.find(p => (p.id || p.title) === decodeURIComponent(id));
+      if (!post)  return articleErr('Maqola topilmadi');
+
+      /*  structured HTML  */
+      let html = `
+        <header class="mb-8 text-center">
+          <time class="text-sm bg-accent/10 text-accent px-2 py-1 rounded">${post.date}</time>
+          <h1 class="text-3xl md:text-4xl font-bold mt-4">${post.title}</h1>
+          <div class="text-sm text-gray-500 mt-2">EliteAsphalt · ${post.date} · ${estimateRead(post.body)} min o‘qish</div>
+        </header>`;
+
+      /*  images  */
+      if (post.images && post.images.length) {
+        html += post.images.map(img => `
+          <figure class="mb-6">
+            <img data-src="${img.url}" alt="${img.caption || post.title}" loading="lazy" onclick="openLightbox('${img.url}')" class="cursor-pointer">
+            ${img.caption ? `<figcaption>${img.caption}</figcaption>` : ''}
+          </figure>`).join('');
+      }
+
+      /*  body – split by new line → paragraphs  */
+      html += post.body.split('\n').map(l => `<p class="mb-5">${l}</p>`).join('');
+
+      document.getElementById('article').innerHTML = html;
+
+      /*  share links  */
+      const url = encodeURIComponent(location.href);
+      const txt = encodeURIComponent(post.title);
+      document.getElementById('shareFb').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+      document.getElementById('shareTg').href = `https://t.me/share/url?url=${url}&text=${txt}`;
+      document.getElementById('shareWa').href = `https://wa.me/?text=${txt}%20${url}`;
+
+      /*  lazy images  */
+      document.querySelectorAll('img[data-src]').forEach(img => {
+        img.src = img.dataset.src;
+        img.onload = () => img.classList.add('fade-in');
+      });
+
+    } catch (e) {
+      articleErr(e.message);
+    }
+  })();
+
+  /*  ----------  helpers  ----------  */
+  function openLightbox(src) {
+    const box = document.getElementById('lightbox');
+    document.getElementById('lightboxImg').src = src;
+    box.classList.remove('hidden');
+  }
+  function articleErr(msg) {
+    document.getElementById('article').innerHTML = `
+      <div class="text-center py-10">
+        <h1 class="text-2xl font-bold text-red-600">Xatolik</h1>
+        <p class="mt-2 text-gray-600">${msg}</p>
+        <a href="/" class="mt-4 inline-block px-4 py-2 bg-primary text-white rounded">Bosh sahifaga qaytish</a>
+      </div>`;
+  }
+  function estimateRead(text) {
+    const w = text.split(/\s+/).length;
+    return Math.ceil(w / 200);
+  }
+</script>
+</body>
+</html>
