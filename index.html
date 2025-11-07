@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <title>Asfalt Xizmati - EliteAsphalt</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#1a365d",
+            secondary: "#4a5568",
+            accent: "#f59e0b",
+            lightBg: "#f7fafc",
+          },
+          borderRadius: {
+            none: "0px", sm: "0.25rem", DEFAULT: "0.5rem", md: "0.75rem", lg: "1rem", xl: "1.25rem", "2xl": "1.5rem", "3xl": "2rem", full: "9999px", button: "0.5rem",
+          },
+          boxShadow: {
+            'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+            'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+          }
+        },
+      },
+    };
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; color: #4a5568; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    .shadow-text { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
+    .telegram-icon-fixed {
+      position: fixed; left: 1rem; bottom: 1rem; z-index: 100; width: 3.5rem; height: 3.5rem;
+      display: flex; align-items: center; justify-content: center; background: #0088cc; color: white;
+      border-radius: 9999px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .telegram-icon-fixed:hover { transform: scale(1.1); box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2); }
+    .telegram-icon-fixed i { font-size: 2rem; }
+    @keyframes pulse-once {
+      0% { box-shadow: 0 0 0 0 rgba(0, 136, 204, 0.4); }
+      70% { box-shadow: 0 0 0 15px rgba(0, 136, 204, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 136, 204, 0); }
+    }
+    .telegram-icon-fixed { animation: pulse-once 3s infinite; }
+    .service-card {
+      background-size: cover; background-position: center; position: relative;
+    }
+    .service-card .content-overlay {
+      position: relative; z-index: 1; padding: 2rem; background: rgba(255, 255, 255, 0.8);
+      border-radius: 0.75rem; height: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+    .animate-ticker { animation: ticker 30s linear infinite; }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    #news-static.hidden, #projects-static.hidden { display: none; }
+    #yangiliklar { padding-bottom: 2rem !important; }
+    #projects { padding-top: 2rem !important; }
+    .section-divider { height: 1px; background: #e2e8f0; margin: 2rem 0; }
+    .section-title { font-size: 2rem; font-weight: 800; color: #1a365d; margin-bottom: 0.5rem; }
+    .section-subtitle { font-size: 1rem; color: #64748b; margin-bottom: 1.5rem; }
+  </style>
+</head>
+<body class="bg-lightBg text-secondary">
+
+  <!-- HEADER -->
+  <header class="fixed w-full bg-white shadow-md z-40 top-0" style="background-color: rgba(255, 255, 255, 0.97);">
+    <nav class="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
+      <div class="flex items-center justify-between">
+        <a href="#home" class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-primary tracking-tight flex items-center">
+          <img src="https://png.pngtree.com/png-clipart/20220303/original/pngtree-construction-of-road-roller-and-urban-construction-png-image_7381746.png" alt="EliteAsphalt Logo" class="h-8 sm:h-10 inline-block mr-2"> ASFALT
+        </a>
+        <div class="flex items-center">
+          <div class="hidden md:flex space-x-4 lg:space-x-7">
+            <a href="#home" class="text-secondary hover:text-primary font-medium transition-default nav-link-icon-shake flex items-center"><i class="ri-home-line mr-1 text-base"></i> Asosiy</a>
+            <a href="#services" class="text-secondary hover:text-primary font-medium transition-default nav-link-icon-shake flex items-center"><i class="ri-settings-4-line mr-1 text-base"></i> Xizmatlar</a>
+            <a href="/yangiliklar.html" class="text-secondary hover:text-primary font-medium transition-default nav-link-icon-shake flex items-center"><i class="ri-newspaper-line mr-1 text-base"></i> Yangiliklar</a>
+            <a href="#why-us" class="text-secondary hover:text-primary font-medium transition-default nav-link-icon-shake flex items-center"><i class="ri-question-line mr-1 text-base"></i> Nega Biz</a>
+            <a href="/loyihalar.html" class="text-secondary hover:text-primary font-medium transition-default nav-link-icon-shake flex items-center"><i class="ri-folder-line mr-1 text-base"></i> Loyihalar</a>
+            <a href="#contact" class="text-secondary hover:text-primary font-medium transition-default nav-link-icon-shake flex items-center"><i class="ri-mail-line mr-1 text-base"></i> Aloqa</a>
+          </div>
+          <div class="flex items-center ml-4 lg:ml-8">
+            <div class="hidden lg:flex text-base xl:text-lg font-semibold text-primary mr-4 lg:mr-6 items-center">
+              <i class="ri-phone-fill mr-2 text-accent"></i>
+              <a href="tel:+998947203407" class="whitespace-nowrap hover:underline">+998 94 720 34 07</a>
+            </div>
+            <div class="relative mr-3 lg:mr-5">
+              <button id="lang-toggle" class="flex items-center text-secondary hover:text-primary focus:outline-none transition-default">
+                <i class="ri-global-line text-xl"></i>
+                <span class="current-lang ml-1 font-medium">O‘ZB</span>
+                <i class="ri-arrow-down-s-line ml-1"></i>
+              </button>
+              <div id="lang-dropdown" class="hidden absolute top-full right-0 bg-white shadow-xl rounded-md py-2 w-36 mt-2 z-50 border border-gray-100">
+                <a href="/uzb/" class="block px-4 py-2 hover:bg-lightBg text-sm text-secondary hover:text-primary transition-default">O‘zbekcha</a>
+                <a href="/kr/" class="block px-4 py-2 hover:bg-lightBg text-sm text-secondary hover:text-primary transition-default">Ўзбекча</a>
+                <a href="/rus/" class="block px-4 py-2 hover:bg-lightBg text-sm text-secondary hover:text-primary transition-default">Русский</a>
+                <a href="/eng/" class="block px-4 py-2 hover:bg-lightBg text-sm text-secondary hover:text-primary transition-default">English</a>
+              </div>
+            </div>
+            <a href="tel:+998947203407" class="hidden md:inline-block bg-primary text-white px-5 lg:px-6 py-2.5 rounded-button font-semibold hover:bg-opacity-80 cursor-pointer whitespace-nowrap text-sm lg:text-base transition-default shadow-sm hover:shadow-md">
+              Narx So'rash
+            </a>
+            <button class="md:hidden w-10 h-10 flex items-center justify-center ml-2 text-primary hover:text-accent transition-default" id="mobile-menu-button" aria-label="Open menu">
+              <i class="ri-menu-3-line text-2xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="md:hidden fixed inset-0 bg-black bg-opacity-60 z-50 transition-opacity duration-300 hidden" id="mobile-menu-overlay">
+      <div class="fixed inset-y-0 right-0 max-w-sm w-full bg-white shadow-xl overflow-y-auto transition-transform transform duration-300 ease-in-out">
+        <div class="flex justify-between items-center p-5 border-b border-gray-200">
+          <a href="#home" class="text-xl font-extrabold text-primary tracking-tight flex items-center">
+             <img src="https://png.pngtree.com/png-clipart/20220303/original/pngtree-construction-of-road-roller-and-urban-construction-png-image_7381746.png" alt="EliteAsphalt Logo - Road Roller Icon" class="h-8 inline-block mr-2"> ASFALT
+          </a>
+          <button class="p-2 text-primary hover:text-accent transition-default" id="close-mobile-menu" aria-label="Close menu">
+            <i class="ri-close-line text-3xl"></i>
+          </button>
+        </div>
+        <div class="space-y-3 p-5">
+            <a href="#home" class="block mobile-nav-link nav-link-icon-shake">
+            <div class="flex items-center justify-between bg-lightBg rounded-md px-4 py-3.5 hover:bg-primary hover:text-white group transition-default">
+              <span class="text-lg font-medium text-secondary group-hover:text-white"><i class="ri-home-line mr-2 text-xl"></i>Asosiy</span>
+              <i class="ri-arrow-right-s-line text-gray-400 group-hover:text-white text-xl"></i>
+            </div>
+          </a>
+          <a href="#services" class="block mobile-nav-link nav-link-icon-shake">
+            <div class="flex items-center justify-between bg-lightBg rounded-md px-4 py-3.5 hover:bg-primary hover:text-white group transition-default">
+              <span class="text-lg font-medium text-secondary group-hover:text-white"><i class="ri-settings-4-line mr-2 text-xl"></i>Xizmatlar</span>
+              <i class="ri-arrow-right-s-line text-gray-400 group-hover:text-white text-xl"></i>
+            </div>
+          </a>
+          <a href="/yangiliklar.html" class="block mobile-nav-link nav-link-icon-shake">
+            <div class="flex items-center justify-between bg-lightBg rounded-md px-4 py-3.5 hover:bg-primary hover:text-white group transition-default">
+                <span class="text-lg font-medium text-secondary group-hover:text-white"><i class="ri-newspaper-line mr-2 text-xl"></i>Yangiliklar</span>
+                <i class="ri-arrow-right-s-line text-gray-400 group-hover:text-white text-xl"></i>
+            </div>
+        </a>
+          <a href="#why-us" class="block mobile-nav-link nav-link-icon-shake">
+            <div class="flex items-center justify-between bg-lightBg rounded-md px-4 py-3.5 hover:bg-primary hover:text-white group transition-default">
+              <span class="text-lg font-medium text-secondary group-hover:text-white"><i class="ri-question-line mr-2 text-xl"></i>Nega Biz</span>
+              <i class="ri-arrow-right-s-line text-gray-400 group-hover:text-white text-xl"></i>
+            </div>
+          </a>
+          <a href="/loyihalar.html" class="block mobile-nav-link nav-link-icon-shake">
+            <div class="flex items-center justify-between bg-lightBg rounded-md px-4 py-3.5 hover:bg-primary hover:text-white group transition-default">
+              <span class="text-lg font-medium text-secondary group-hover:text-white"><i class="ri-folder-line mr-2 text-xl"></i>Loyihalar</span>
+              <i class="ri-arrow-right-s-line text-gray-400 group-hover:text-white text-xl"></i>
+            </div>
+          </a>
+          <a href="#contact" class="block mobile-nav-link nav-link-icon-shake">
+            <div class="flex items-center justify-between bg-lightBg rounded-md px-4 py-3.5 hover:bg-primary hover:text-white group transition-default">
+              <span class="text-lg font-medium text-secondary group-hover:text-white"><i class="ri-mail-line mr-2 text-xl"></i>Aloqa</span>
+              <i class="ri-arrow-right-s-line text-gray-400 group-hover:text-white text-xl"></i>
+            </div>
+          </a>
+          <div class="pt-8 border-t border-gray-200 mt-5">
+            <a href="tel:+998947203407" class="block bg-primary text-white px-6 py-3.5 rounded-button hover:bg-opacity-80 cursor-pointer text-lg font-semibold mx-auto text-center w-full mb-5 transition-default shadow-md hover:shadow-lg">
+              Narx So'rash
+            </a>
+            <div class="flex items-center justify-center text-primary font-medium">
+              <i class="ri-phone-fill mr-2 text-accent"></i>
+              <a href="tel:+998947203407" class="hover:underline">+998 94 720 34 07</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- HERO SECTION -->
+    <section id="home" class="relative min-h-[calc(100svh-80px)] flex items-center justify-center text-center bg-gray-700"
+             style="background-image: url('https://le-cdn.hibuwebsites.com/8a839bcaa7494e16917dc52d58ab02ce/dms3rep/multi/opt/RSshutterstock_212917774-1920w.jpg'); background-size: cover; background-position: center center;"
+             onerror="this.style.backgroundImage='url(https://placehold.co/1920x1080/374151/FFFFFF?text=Asphalt+Paving+Experts)'; this.onerror=null;">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-transparent"></div>
+      <div class="container mx-auto px-6 relative z-10 py-16 md:py-24">
+        <div class="max-w-3xl mx-auto">
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 text-white leading-tight shadow-text">
+            O'zbekiston bo'ylab sifatli asfalt xizmati
+          </h1>
+          <p class="text-lg sm:text-xl mb-10 text-gray-200 max-w-xl mx-auto">
+            25+ yillik tajriba bilan barcha turdagi asfalt yotqizish, ta'mirlash xizmatlarini taklif etamiz.
+          </p>
+          <div class="flex flex-col items-center space-y-6">
+            <a href="tel:+998947203407" class="bg-accent text-primary px-8 sm:px-10 py-3.5 sm:py-4 rounded-button font-bold text-base sm:text-lg cursor-pointer whitespace-nowrap shadow-lg hover:bg-opacity-90 transition-default transform hover:scale-105 flex items-center group">
+              <i class="ri-phone-line mr-2 text-lg"></i>
+              Bepul Narx So'rash
+            </a>
+            <div class="flex items-center justify-center text-white">
+              <i class="ri-phone-fill text-2xl sm:text-3xl text-accent mr-2"></i>
+              <a href="tel:+998947203407" class="text-2xl sm:text-3xl font-bold hover:text-gray-300 transition-colors">
+                +998 94 720 34 07
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- SERVICES SECTION -->
+    <section id="services" class="py-12 md:py-16 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-8 md:mb-10">
+          <h2 class="section-title">Bizning Xizmatlarimiz</h2>
+          <p class="section-subtitle">Eng yuqori sifatli materiallar va zamonaviy texnologiyalar yordamida keng ko'lamli xizmatlarni taqdim etamiz.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="rounded-xl shadow-card hover:shadow-card-hover transition-default flex flex-col group icon-bounce-hover service-card"
+               style="background-image: url('https://www.fordasphalt.com/wp-content/uploads/sites/20/2023/10/RSshutterstock_212917741-1170x658.jpg');"
+               onerror="this.style.backgroundImage='url(https://placehold.co/600x400/e2e8f0/4a5568?text=Asphalt+Paving)'; this.onerror=null;">
+              <div class="content-overlay">
+                <div class="w-16 h-16 flex items-center justify-center bg-primary bg-opacity-10 rounded-full transition-default group-hover:bg-accent group-hover:bg-opacity-100 icon-container">
+                  <i class="ri-road-map-line text-primary text-3xl transition-default group-hover:text-white"></i>
+                </div>
+                <h3 class="text-xl sm:text-2xl font-bold text-gray-800 group-hover:text-primary">Asfalt Yotqizish</h3>
+                <p class="text-secondary flex-grow text-sm leading-relaxed group-hover:text-gray-700">
+                  Yo'llar, avtoturargohlar, hovlilar va piyodalar yo'laklari uchun mustahkam asfalt qoplamalari.
+                </p>
+                <a href="#contact" class="inline-block bg-primary text-white text-sm font-semibold py-2.5 px-5 rounded-md hover:bg-opacity-80 transition-default self-center group-hover:bg-accent">Batafsil Ma'lumot</a>
+              </div>
+          </div>
+          <div class="rounded-xl shadow-card hover:shadow-card-hover transition-default flex flex-col group icon-bounce-hover service-card"
+               style="background-image: url('https://www.richfieldblacktop.com/wp-content/uploads/2023/01/explaining-the-manufacturing-process-of-asphalt.jpg');"
+               onerror="this.style.backgroundImage='url(https://placehold.co/600x400/e2e8f0/4a5568?text=Maintenance)'; this.onerror=null;">
+               <div class="content-overlay">
+                <div class="w-16 h-16 flex items-center justify-center bg-primary bg-opacity-10 rounded-full transition-default group-hover:bg-accent group-hover:bg-opacity-100 icon-container">
+                  <i class="ri-tools-fill text-primary text-3xl transition-default group-hover:text-white"></i>
+                </div>
+                <h3 class="text-xl sm:text-2xl font-bold text-gray-800 group-hover:text-primary">Ta'mirlash va Texnik Xizmat</h3>
+                <p class="text-secondary flex-grow text-sm leading-relaxed group-hover:text-gray-700">
+                  Yoriqlarni to'ldirish, chuqurlarni yamash va eskirgan qoplamalarni tiklash orqali asfaltning xizmat muddatini uzaytirish.
+                </p>
+                <a href="#contact" class="inline-block bg-primary text-white text-sm font-semibold py-2.5 px-5 rounded-md hover:bg-opacity-80 transition-default self-center group-hover:bg-accent">Biz Bilan Bog'laning</a>
+              </div>
+          </div>
+          <div class="rounded-xl shadow-card hover:shadow-card-hover transition-default flex flex-col group icon-bounce-hover service-card"
+               style="background-image: url('https://www.bridjit.com/wp-content/uploads/2021/03/barrier-curb.jpg');"
+               onerror="this.style.backgroundImage='url(https://placehold.co/600x400/e2e8f0/4a5568?text=Curb+Drainage)'; this.onerror=null;">
+              <div class="content-overlay">
+                <div class="w-16 h-16 flex items-center justify-center bg-primary bg-opacity-10 rounded-full transition-default group-hover:bg-accent group-hover:bg-opacity-100 icon-container">
+                  <i class="ri-pencil-ruler-2-line text-primary text-3xl transition-default group-hover:text-white"></i>
+                </div>
+                <h3 class="text-xl sm:text-2xl font-bold text-gray-800 group-hover:text-primary">Bordyur va Drenaj</h3>
+                <p class="text-secondary flex-grow text-sm leading-relaxed group-hover:text-gray-700">
+                  Estetik ko'rinish va suv oqimini to'g'ri yo'naltirish uchun bardoshli bordyurlar va lotoklarni o'rnatish.
+                </p>
+                <a href="#contact" class="inline-block bg-primary text-white text-sm font-semibold py-2.5 px-5 rounded-md hover:bg-opacity-80 transition-default self-center group-hover:bg-accent">Narx So'rash</a>
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- LATEST NEWS - ONLY SLIDING -->
+    <section id="yangiliklar" class="py-10 md:py-12 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-6 md:mb-8">
+          <h2 class="section-title">So‘nggi Yangiliklar</h2>
+          <p class="section-subtitle">Kompaniyamizdagi yangi ishlar, tenderlar va afzalliklardan xabardor bo‘ling.</p>
+        </div>
+
+        <!-- ONLY SLIDING TICKER (max 4 items) -->
+        <div class="relative overflow-hidden">
+          <div id="news-ticker" class="flex space-x-6 animate-ticker">
+            <!-- Latest 4 cards injected by JS -->
+          </div>
+        </div>
+
+        <!-- View All Button -->
+        <div class="text-center mt-6">
+          <a href="/yangiliklar.html" class="inline-block bg-accent text-primary px-6 py-3 rounded-button font-semibold hover:bg-opacity-80 transition shadow">
+            Barcha Yangiliklar →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- LATEST PROJECTS - ONLY SLIDING -->
+    <section id="projects" class="py-10 md:py-12 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-6 md:mb-8">
+          <h2 class="section-title">Bizning Loyihalarimiz</h2>
+          <p class="section-subtitle">Muvaffaqiyatli yakunlangan ishlarimizdan namunalar – sifat va professionallik belgisi.</p>
+        </div>
+
+        <!-- ONLY SLIDING TICKER (max 4 items) -->
+        <div class="relative overflow-hidden">
+          <div id="projects-ticker" class="flex space-x-6 animate-ticker">
+            <!-- Latest 4 cards injected by JS -->
+          </div>
+        </div>
+
+        <!-- View All Button -->
+        <div class="text-center mt-6">
+          <a href="/loyihalar.html" class="inline-block bg-accent text-primary px-6 py-3 rounded-button font-semibold hover:bg-opacity-80 transition shadow">
+            Barcha Loyihalar →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- WHY US SECTION -->
+    <section id="why-us" class="py-12 md:py-16 bg-lightBg">
+      <div class="container mx-auto px-6">
+        <div class="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+          <div class="lg:w-1/2">
+            <img src="https://www.bennettpavingtx.com/wp-content/uploads/2022/09/5-Benefits-of-Hiring-a-Professional-Asphalt-Contractor.jpg" alt="Nega EliteAsphalt tanlanadi" class="rounded-xl shadow-xl w-full h-auto object-cover max-h-[500px]"
+                 onerror="this.src='https://placehold.co/600x500/e2e8f0/4a5568?text=Our+Advantages'; this.onerror=null;">
+          </div>
+          <div class="lg:w-1/2">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-primary mb-6">Nega Aynan Bizni Tanlaysiz?</h2>
+            <p class="text-lg text-secondary mb-8">Biz har bir mijozimizga individual yondashuv, yuqori sifatli xizmat va ishonchli natijalarni kafolatlaymiz.</p>
+            <div class="space-y-6">
+              <div class="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm icon-bounce-hover">
+                <div class="w-12 h-12 flex items-center justify-center bg-accent bg-opacity-10 rounded-full flex-shrink-0">
+                  <i class="ri-medal-fill text-accent text-2xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold mb-1 text-gray-800">25+ Yillik Tajriba</h3>
+                  <p class="text-secondary text-sm leading-relaxed">
+                    Asfaltlash sohasidagi ko'p yillik tajribamiz – bu sizning loyihangiz muvaffaqiyatining kalitidir.
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm icon-bounce-hover">
+                <div class="w-12 h-12 flex items-center justify-center bg-accent bg-opacity-10 rounded-full flex-shrink-0">
+                  <i class="ri-shield-star-line text-accent text-2xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold mb-1 text-gray-800">Sifat Kafolati</h3>
+                  <p class="text-secondary text-sm leading-relaxed">
+                    Faqat sertifikatlangan materiallar va ilg'or texnologiyalardan foydalanamiz, har bir bosqichda sifat nazorati.
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm icon-bounce-hover">
+                <div class="w-12 h-12 flex items-center justify-center bg-accent bg-opacity-10 rounded-full flex-shrink-0">
+                  <i class="ri-time-fill text-accent text-2xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold mb-1 text-gray-800">O‘z Vaqtida Bajarish</h3>
+                  <p class="text-secondary text-sm leading-relaxed">
+                    Loyihalarni kelishilgan muddatlarda, byudjet doirasida va eng yuqori standartlarga muvofiq yakunlaymiz.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-12 md:py-16 bg-primary text-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12 md:mb-16">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-3">Biz Bilan Bog'laning</h2>
+            <p class="text-lg text-gray-300 max-w-xl mx-auto">Savollaringiz bormi yoki loyihangizni muhokama qilmoqchimisiz? Bizga qo'ng'iroq qiling yoki xabar yuboring!</p>
+        </div>
+        <div class="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
+          <div class="lg:w-1/2 w-full">
+            <div class="bg-white bg-opacity-5 p-8 rounded-xl shadow-lg space-y-6">
+              <div class="flex items-start">
+                <i class="ri-map-pin-2-fill text-3xl mr-4 text-accent"></i>
+                <div>
+                    <h4 class="text-lg font-semibold text-white">Manzilimiz:</h4>
+                    <span class="text-gray-200">Toshkent shahri, Chilonzor tumani</span>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i class="ri-phone-fill text-3xl mr-4 text-accent"></i>
+                <div>
+                    <h4 class="text-lg font-semibold text-white">Telefon Raqam:</h4>
+                    <a href="tel:+998947203407" class="text-gray-200 hover:text-white hover:underline transition-default text-xl">+998 94 720 34 07</a>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i class="ri-mail-open-fill text-3xl mr-4 text-accent"></i>
+                <div>
+                    <h4 class="text-lg font-semibold text-white">Elektron Pochta:</h4>
+                    <a href="mailto:info@eliteasphalt.com" class="text-gray-200 hover:text-white hover:underline transition-default">info@eliteasphalt.com</a>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white bg-opacity-5 p-8 rounded-xl shadow-lg mt-8">
+              <h3 class="text-2xl font-bold mb-5 text-white text-center">Ish Vaqti</h3>
+              <div class="space-y-3 text-gray-200">
+                <div class="flex justify-between items-center border-b border-gray-700 pb-2">
+                  <span class="font-medium">Dushanba - Juma:</span>
+                  <span class="font-semibold bg-accent/20 text-accent px-2 py-1 rounded-sm text-sm">24/7 (Murojaat uchun)</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-gray-700 pb-2">
+                  <span class="font-medium">Shanba:</span>
+                  <span class="font-semibold bg-accent/20 text-accent px-2 py-1 rounded-sm text-sm">24/7 (Murojaat uchun)</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="font-medium">Yakshanba:</span>
+                  <span class="font-semibold bg-accent/20 text-accent px-2 py-1 rounded-sm text-sm">24/7 (Murojaat uchun)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lg:w-1/2 w-full bg-white bg-opacity-5 p-8 rounded-xl shadow-lg">
+             <h3 class="text-2xl font-bold mb-5 text-white text-center">Bizning Manzil</h3>
+             <div class="w-full h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden shadow-xl">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48003.49514886219!2d69.15001115079627!3d41.27826463969516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8b1f0b000001%3A0x28d736438447d100!2sChilonzor%20tumani%2C%20Tashkent%2C%20Uzbekistan!5e0!3m2!1sen!2sus!4v1715209143509!5m2!1sen!2sus"
+                  width="100%"
+                  height="100%"
+                  style="border:0;"
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  title="EliteAsphalt Location in Tashkent">
+                </iframe>
+             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div>
+          <a href="#home" class="text-2xl font-extrabold tracking-tight mb-4 inline-block flex items-center">
+             <img src="https://png.pngtree.com/png-clipart/20220303/original/pngtree-construction-of-road-roller-and-urban-construction-png-image_7381746.png" alt="EliteAsphalt Logo" class="h-10 inline-block">
+          </a>
+          <p class="text-gray-400 text-sm leading-relaxed">25 yildan ortiq tajriba bilan O'zbekiston bo'ylab sifatli asfalt yotqizish va ta'mirlash xizmatlarini taqdim etamiz.</p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-5 text-gray-200">Sahifalar</h4>
+          <ul class="space-y-3">
+            <li><a href="#home" class="text-gray-400 hover:text-accent transition-default text-sm">Asosiy</a></li>
+            <li><a href="#services" class="text-gray-400 hover:text-accent transition-default text-sm">Xizmatlar</a></li>
+            <li><a href="#why-us" class="text-gray-400 hover:text-accent transition-default text-sm">Nega Biz</a></li>
+            <li><a href="#projects" class="text-gray-400 hover:text-accent transition-default text-sm">Loyihalar</a></li>
+            <li><a href="#contact" class="text-gray-400 hover:text-accent transition-default text-sm">Aloqa</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-5 text-gray-200">Aloqa Ma'lumotlari</h4>
+          <ul class="space-y-3 text-gray-400 text-sm">
+            <li class="flex items-start"><i class="ri-map-pin-line mr-2.5 mt-0.5 text-accent"></i>Toshkent, Chilonzor tumani.</li>
+            <li class="flex items-start"><i class="ri-phone-line mr-2.5 mt-0.5 text-accent"></i><a href="tel:+998947203407" class="hover:text-accent transition-default">+998 94 720 34 07</a></li>
+            <li class="flex items-start"><i class="ri-mail-send-line mr-2.5 mt-0.5 text-accent"></i><a href="mailto:info@eliteasphalt.com" class="hover:text-accent transition-default">info@eliteasphalt.com</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-5 text-gray-200">Ijtimoiy Tarmoqlar</h4>
+          <div class="flex space-x-3">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-10 rounded-full hover:bg-accent hover:text-primary transition-default group"><i class="ri-facebook-fill text-xl text-gray-300 group-hover:text-primary transition-default"></i></a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-10 rounded-full hover:bg-accent hover:text-primary transition-default group"><i class="ri-instagram-line text-xl text-gray-300 group-hover:text-primary transition-default"></i></a>
+            <a href="https://t.me/yourtelegram" target="_blank" rel="noopener noreferrer" aria-label="Telegram" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-10 rounded-full hover:bg-accent hover:text-primary transition-default group"><i class="ri-telegram-line text-xl text-gray-300 group-hover:text-primary transition-default"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-10 pt-8 text-center text-gray-500 text-xs">
+        <p>© <span id="currentYear"></span> EliteAsphalt. Barcha huquqlar himoyalangan. Vebsayt <a href="https://readdy.ai" target="_blank" rel="noopener" class="hover:text-accent">Readdy.ai</a> tomonidan yaxshilandi.</p>
+      </div>
+    </div>
+  </footer>
+  <a href="https://t.me/Asfaltishlaruz" class="telegram-icon-fixed" target="_blank" rel="noopener noreferrer" aria-label="Telegram Account">
+      <i class="ri-telegram-fill"></i>
+  </a>
+  <button class="scroll-top fixed bottom-6 right-6 sm:bottom-8 sm:right-8 bg-accent text-primary w-12 h-12 rounded-full shadow-lg items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300 z-50" aria-label="Scroll to top">
+    <i class="ri-arrow-up-s-line text-2xl"></i>
+  </button>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Language Dropdown
+      const langToggle = document.getElementById('lang-toggle');
+      const langDropdown = document.getElementById('lang-dropdown');
+      if (langToggle && langDropdown) {
+        langToggle.addEventListener('click', e => { e.stopPropagation(); langDropdown.classList.toggle('hidden'); });
+        document.addEventListener('click', () => langDropdown.classList.add('hidden'));
+      }
+
+      // Mobile Menu
+      const mobileMenuButton = document.getElementById("mobile-menu-button");
+      const mobileMenuOverlay = document.getElementById("mobile-menu-overlay");
+      const closeMobileMenuButton = document.getElementById("close-mobile-menu");
+      function closeMobileMenu() { mobileMenuOverlay?.classList.add("hidden"); document.body.style.overflow = ""; }
+      if (mobileMenuButton && mobileMenuOverlay) {
+        mobileMenuButton.addEventListener("click", () => { mobileMenuOverlay.classList.remove("hidden"); document.body.style.overflow = "hidden"; });
+        closeMobileMenuButton?.addEventListener("click", closeMobileMenu);
+        mobileMenuOverlay.addEventListener("click", e => { if (e.target === mobileMenuOverlay) closeMobileMenu(); });
+      }
+
+      // Scroll-to-Top Button
+      const scrollTopButton = document.querySelector(".scroll-top");
+      if (scrollTopButton) {
+        window.addEventListener("scroll", () => scrollTopButton.classList.toggle("active", window.pageYOffset > 400));
+        scrollTopButton.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+      }
+
+      // Smooth Scrolling
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          const href = this.getAttribute('href');
+          if (href.length > 1 && href.startsWith('#')) {
+            const targetElement = document.querySelector(href);
+            if (targetElement) {
+              e.preventDefault();
+              const headerOffset = document.querySelector('header').offsetHeight || 80;
+              const elementPosition = targetElement.getBoundingClientRect().top;
+              const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+              window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+              if (anchor.closest('#mobile-menu-overlay') && !mobileMenuOverlay.classList.contains("hidden")) closeMobileMenu();
+            }
+          }
+        });
+      });
+
+      // Current Year
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+      // Adjust Main Padding
+      const header = document.querySelector('header');
+      const mainContent = document.getElementById('main-content');
+      function adjustMainPadding() { if (header && mainContent) mainContent.style.paddingTop = header.offsetHeight + 'px'; }
+      window.addEventListener('load', adjustMainPadding);
+      window.addEventListener('resize', adjustMainPadding);
+    });
+
+    // LATEST NEWS TICKER (max 4 items)
+    (async ()=>{
+      const tickerEl = document.getElementById('news-ticker');
+      try{
+        const posts = await fetch('/api/news').then(r=>r.json());
+        const latest = posts.slice(0,4);
+        if(!latest.length) throw 0;
+        const card = (p)=>`
+          <article class="shrink-0 w-80 bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition news-card flex flex-col">
+            <img src="${p.img||'https://placehold.co/600x400/e2e8f0/4a5568?text=Yangilik'}" alt="${p.title}" class="w-full h-48 object-cover">
+            <div class="p-6 flex flex-col flex-1">
+              <time class="text-xs bg-accent/10 text-accent px-2 py-1 rounded self-start mb-2">${p.date}</time>
+              <h2 class="text-xl font-bold mb-2 text-gray-800 line-clamp-2">${p.title}</h2>
+              <p class="text-secondary text-sm leading-relaxed line-clamp-3 flex-1">${p.body}</p>
+              <a href="/post.html?type=news&id=${encodeURIComponent(p.id||p.title)}" class="text-accent text-xs mt-3 inline-block">Read more →</a>
+            </div>
+          </article>`;
+        tickerEl.innerHTML = latest.map(card).join('') + latest.map(card).join('');
+      }catch{
+        tickerEl.innerHTML = '<p class="text-center text-gray-500">Yangiliklar yuklanmadi.</p>';
+      }
+    })();
+
+    // LATEST PROJECTS TICKER (max 4 items)
+    (async ()=>{
+      const tickerEl = document.getElementById('projects-ticker');
+      try{
+        const list = await fetch('/api/projects').then(r=>r.json());
+        const latest = list.slice(0,4);
+        if(!latest.length) throw 0;
+        const card = (p)=>`
+          <article class="shrink-0 w-80 bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition project-card flex flex-col">
+            <img src="${p.img||'https://placehold.co/600x400/e2e8f0/4a5568?text=Loyiha'}" alt="${p.title}" class="w-full h-48 object-cover">
+            <div class="p-6 flex flex-col flex-1">
+              <h2 class="text-xl font-bold mb-2 text-gray-800">${p.title}</h2>
+              <p class="text-secondary text-sm leading-relaxed line-clamp-3 flex-1">${p.description||p.body}</p>
+              <a href="/post.html?type=projects&id=${encodeURIComponent(p.id||p.title)}" class="text-accent text-xs mt-3 inline-block">Read more →</a>
+            </div>
+          </article>`;
+        tickerEl.innerHTML = latest.map(card).join('') + latest.map(card).join('');
+      }catch{
+        tickerEl.innerHTML = '<p class="text-center text-gray-500">Loyihalar yuklanmadi.</p>';
+      }
+    })();
+  </script>
+</body>
+</html>
